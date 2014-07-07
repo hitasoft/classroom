@@ -1,0 +1,668 @@
+<?php
+/*
+ *      setprofile.html
+ *      
+ *      Display the profile information of live user
+ *      
+ */
+
+$title="Setup profile - ".$_title;
+$page = "pg-setup";
+$extra_link='<link rel="stylesheet" type="text/css" media="screen" href="/css/jquery-ui.css" >';
+include($tmpl."header.html");
+$ul=$user['login'];
+if (substr($ul,0,5)!='_tmp_') $uul=$ul;
+$user_image=getUserImage($ul);
+$maxsize=ini_get('upload_max_filesize');
+
+foreach (array('classes'=>"Title of the class") as $field=>$mask){
+$data=unserialize($vars['f_'.$field]);
+if (!is_array($data) || count($data)==0){
+   $data=array("");
+}
+$count=1;
+foreach ($data as $v){
+   $inputTag="<input type='text' class='f_$field' name='f_{$field}[]' id='f_$field$count' value='$v' mask='$mask' display='class'>";
+   $input[$field].=$inputTag;
+   $mask="More ".$field;
+   $count++;
+}
+}
+
+$schoolPane=<<<EOF
+   <div id="schoolPane">
+      <div id="schoolFind">
+         <h2>Find Your School</h2>
+         <p><input id="findSchool" type="text" placeholder="Enter School Name, City, State, Zip Code or Country" value="{$vars['f_school']}"></p>
+		 <p class="small">Couldn't find your school? <a id="schoolAddBtn">Add it here</a>.</p>
+      </div><!-- schoolFind end -->
+	  <div id="schoolAdd">
+		<h3>Add your school below:</h3>
+		<form id="frmAddSchool" method="post" action="{$_SERVER['PHP_SELF']}">
+			<table>
+			<tr><td colspan="3"><input type="text" placeholder="School Name" name="f_school" id="f_school" value=""></td></tr>
+			<tr><td colspan="3"><input type="text" placeholder="Address" name="f_address" id="f_address" value=""></td></tr>
+			<tr class="multi"><td><input type="text" placeholder="City" name="f_city" id="f_city" value=""></td>
+				<td><input type="text" placeholder="State" name="f_state" id="f_state" value=""></td>
+				<td><input type="text" placeholder="Zip" name="f_zip" id="f_zip" value=""></td>
+			</tr>
+			<tr class="noborder"><td colspan="3"><select name="f_country" id="f_country" class="">
+				<option value="">[Select country]</option>
+				<option value="US" selected="selected">United States</option>
+				<option value="CA">Canada</option>
+				<option value="AF">Afghanistan</option>
+				<option value="AL">Albania</option>
+				<option value="DZ">Algeria</option>
+				<option value="AS">American Samoa</option>
+				<option value="AD">Andorra</option>
+				<option value="AO">Angola</option>
+				<option value="AI">Anguilla</option>
+				<option value="AQ">Antarctica</option>
+				<option value="AG">Antigua and Barbuda</option>
+				<option value="AR">Argentina</option>
+				<option value="AM">Armenia</option>
+				<option value="AW">Aruba</option>
+				<option value="AU">Australia</option>
+				<option value="AT">Austria</option>
+				<option value="AZ">Azerbaijan</option>
+				<option value="BS">Bahamas</option>
+				<option value="BH">Bahrain</option>
+				<option value="BD">Bangladesh</option>
+				<option value="BB">Barbados</option>
+				<option value="BY">Belarus</option>
+				<option value="BE">Belgium</option>
+				<option value="BZ">Belize</option>
+				<option value="BJ">Benin</option>
+				<option value="BM">Bermuda</option>
+				<option value="BT">Bhutan</option>
+				<option value="BO">Bolivia</option>
+				<option value="BQ">Bonaire, Sint Eustatius and Saba</option>
+				<option value="BA">Bosnia and Herzegovina</option>
+				<option value="BW">Botswana</option>
+				<option value="BV">Bouvet Island</option>
+				<option value="BR">Brazil</option>
+				<option value="IO">British Indian Ocean Territory</option>
+				<option value="BN">Brunei</option>
+				<option value="BG">Bulgaria</option>
+				<option value="BF">Burkina Faso</option>
+				<option value="BI">Burundi</option>
+				<option value="KH">Cambodia</option>
+				<option value="CM">Cameroon</option>
+				<option value="CV">Cape Verde</option>
+				<option value="KY">Cayman Islands</option>
+				<option value="CF">Central African Republic</option>
+				<option value="TD">Chad</option>
+				<option value="CL">Chile</option>
+				<option value="CN">China</option>
+				<option value="CX">Christmas Island</option>
+				<option value="CC">Cocos (Keeling) Islands</option>
+				<option value="CO">Colombia</option>
+				<option value="KM">Comoros</option>
+				<option value="CG">Congo</option>
+				<option value="CD">Congo (DRC)</option>
+				<option value="CK">Cook Islands</option>
+				<option value="CR">Costa Rica</option>
+				<option value="CI">Cote d'Ivoire</option>
+				<option value="HR">Croatia (Hrvatska)</option>
+				<option value="CU">Cuba</option>
+				<option value="CW">Curaçao</option>
+				<option value="CY">Cyprus</option>
+				<option value="CZ">Czech Republic</option>
+				<option value="DK">Denmark</option>
+				<option value="DJ">Djibouti</option>
+				<option value="DM">Dominica</option>
+				<option value="DO">Dominican Republic</option>
+				<option value="TL">East Timor</option>
+				<option value="EC">Ecuador</option>
+				<option value="EG">Egypt</option>
+				<option value="SV">El Salvador</option>
+				<option value="GQ">Equatorial Guinea</option>
+				<option value="ER">Eritrea</option>
+				<option value="EE">Estonia</option>
+				<option value="ET">Ethiopia</option>
+				<option value="FK">Falkland Islands (Islas Malvinas)</option>
+				<option value="FO">Faroe Islands</option>
+				<option value="FJ">Fiji Islands</option>
+				<option value="FI">Finland</option>
+				<option value="FR">France</option>
+				<option value="GF">French Guiana</option>
+				<option value="PF">French Polynesia</option>
+				<option value="TF">French Southern and Antarctic Lands</option>
+				<option value="GA">Gabon</option>
+				<option value="GM">Gambia</option>
+				<option value="GE">Georgia</option>
+				<option value="DE">Germany</option>
+				<option value="GH">Ghana</option>
+				<option value="GI">Gibraltar</option>
+				<option value="GR">Greece</option>
+				<option value="GL">Greenland</option>
+				<option value="GD">Grenada</option>
+				<option value="GP">Guadeloupe</option>
+				<option value="GU">Guam</option>
+				<option value="GT">Guatemala</option>
+				<option value="GG">Guernsey</option>
+				<option value="GN">Guinea</option>
+				<option value="GW">Guinea-Bissau</option>
+				<option value="GY">Guyana</option>
+				<option value="HT">Haiti</option>
+				<option value="HM">Heard Island and McDonald Islands</option>
+				<option value="HN">Honduras</option>
+				<option value="HK">Hong Kong SAR</option>
+				<option value="HU">Hungary</option>
+				<option value="IS">Iceland</option>
+				<option value="IN">India</option>
+				<option value="ID">Indonesia</option>
+				<option value="IR">Iran</option>
+				<option value="IQ">Iraq</option>
+				<option value="IE">Ireland</option>
+				<option value="IM">Isle of Man</option>
+				<option value="IL">Israel</option>
+				<option value="IT">Italy</option>
+				<option value="JM">Jamaica</option>
+				<option value="JP">Japan</option>
+				<option value="JE">Jersey</option>
+				<option value="JO">Jordan</option>
+				<option value="KZ">Kazakhstan</option>
+				<option value="KE">Kenya</option>
+				<option value="KI">Kiribati</option>
+				<option value="KR">Korea</option>
+				<option value="KW">Kuwait</option>
+				<option value="KG">Kyrgyzstan</option>
+				<option value="LA">Laos</option>
+				<option value="LV">Latvia</option>
+				<option value="LB">Lebanon</option>
+				<option value="LS">Lesotho</option>
+				<option value="LR">Liberia</option>
+				<option value="LY">Libya</option>
+				<option value="LI">Liechtenstein</option>
+				<option value="LT">Lithuania</option>
+				<option value="LU">Luxembourg</option>
+				<option value="MO">Macao SAR</option>
+				<option value="MK">Macedonia</option>
+				<option value="MG">Madagascar</option>
+				<option value="MW">Malawi</option>
+				<option value="MY">Malaysia</option>
+				<option value="MV">Maldives</option>
+				<option value="ML">Mali</option>
+				<option value="MT">Malta</option>
+				<option value="MH">Marshall Islands</option>
+				<option value="MQ">Martinique</option>
+				<option value="MR">Mauritania</option>
+				<option value="MU">Mauritius</option>
+				<option value="YT">Mayotte</option>
+				<option value="MX">Mexico</option>
+				<option value="FM">Micronesia</option>
+				<option value="MD">Moldova</option>
+				<option value="MC">Monaco</option>
+				<option value="MN">Mongolia</option>
+				<option value="ME">Montenegro</option>
+				<option value="MS">Montserrat</option>
+				<option value="MA">Morocco</option>
+				<option value="MZ">Mozambique</option>
+				<option value="MM">Myanmar</option>
+				<option value="NA">Namibia</option>
+				<option value="NR">Nauru</option>
+				<option value="NP">Nepal</option>
+				<option value="NL">Netherlands</option>
+				<option value="AN">Netherlands Antilles</option>
+				<option value="NC">New Caledonia</option>
+				<option value="NZ">New Zealand</option>
+				<option value="NI">Nicaragua</option>
+				<option value="NE">Niger</option>
+				<option value="NG">Nigeria</option>
+				<option value="NU">Niue</option>
+				<option value="NF">Norfolk Island</option>
+				<option value="KP">North Korea</option>
+				<option value="MP">Northern Mariana Islands</option>
+				<option value="NO">Norway</option>
+				<option value="OM">Oman</option>
+				<option value="PK">Pakistan</option>
+				<option value="PW">Palau</option>
+				<option value="PS">Palestinian Territory, Occupied</option>
+				<option value="PA">Panama</option>
+				<option value="PG">Papua New Guinea</option>
+				<option value="PY">Paraguay</option>
+				<option value="PE">Peru</option>
+				<option value="PH">Philippines</option>
+				<option value="PN">Pitcairn Islands</option>
+				<option value="PL">Poland</option>
+				<option value="PT">Portugal</option>
+				<option value="PR">Puerto Rico</option>
+				<option value="QA">Qatar</option>
+				<option value="RE">Reunion</option>
+				<option value="RO">Romania</option>
+				<option value="RU">Russia</option>
+				<option value="RW">Rwanda</option>
+				<option value="BL">Saint Barthélemy</option>
+				<option value="MF">Saint Martin (French part)</option>
+				<option value="WS">Samoa</option>
+				<option value="SM">San Marino</option>
+				<option value="ST">Sao Tome and Principe</option>
+				<option value="SA">Saudi Arabia</option>
+				<option value="SN">Senegal</option>
+				<option value="RS">Serbia</option>
+				<option value="SC">Seychelles</option>
+				<option value="SL">Sierra Leone</option>
+				<option value="SG">Singapore</option>
+				<option value="SX">Sint Maarten (Dutch part)</option>
+				<option value="SK">Slovakia</option>
+				<option value="SI">Slovenia</option>
+				<option value="SB">Solomon Islands</option>
+				<option value="SO">Somalia</option>
+				<option value="ZA">South Africa</option>
+				<option value="GS">South Georgia and the South Sandwich Islands</option>
+				<option value="SS">South Sudan</option>
+				<option value="ES">Spain</option>
+				<option value="LK">Sri Lanka</option>
+				<option value="SH">St. Helena</option>
+				<option value="KN">St. Kitts and Nevis</option>
+				<option value="LC">St. Lucia</option>
+				<option value="PM">St. Pierre and Miquelon</option>
+				<option value="VC">St. Vincent and the Grenadines</option>
+				<option value="SD">Sudan</option>
+				<option value="SR">Suriname</option>
+				<option value="SJ">Svalbard and Jan Mayen</option>
+				<option value="SZ">Swaziland</option>
+				<option value="SE">Sweden</option>
+				<option value="CH">Switzerland</option>
+				<option value="SY">Syria</option>
+				<option value="TW">Taiwan</option>
+				<option value="TJ">Tajikistan</option>
+				<option value="TZ">Tanzania</option>
+				<option value="TH">Thailand</option>
+				<option value="TG">Togo</option>
+				<option value="TK">Tokelau</option>
+				<option value="TO">Tonga</option>
+				<option value="TT">Trinidad and Tobago</option>
+				<option value="TN">Tunisia</option>
+				<option value="TR">Turkey</option>
+				<option value="TM">Turkmenistan</option>
+				<option value="TC">Turks and Caicos Islands</option>
+				<option value="TV">Tuvalu</option>
+				<option value="UG">Uganda</option>
+				<option value="UA">Ukraine</option>
+				<option value="AE">United Arab Emirates</option>
+				<option value="GB">United Kingdom</option>
+				<option value="UM">United States Minor Outlying Islands</option>
+				<option value="UY">Uruguay</option>
+				<option value="UZ">Uzbekistan</option>
+				<option value="VU">Vanuatu</option>
+				<option value="VA">Vatican City</option>
+				<option value="VE">Venezuela</option>
+				<option value="VN">Viet Nam</option>
+				<option value="VI">Virgin Islands</option>
+				<option value="VG">Virgin Islands (British)</option>
+				<option value="WF">Wallis and Futuna</option>
+				<option value="EH">Western Sahara</option>
+				<option value="YE">Yemen</option>
+				<option value="ZM">Zambia</option>
+				<option value="ZW">Zimbabwe</option>
+				<option value="AX">Åland Islands</option>
+			</select>
+			</td></tr>
+			</table>
+			<p id="f_grade"><input type="text" name="f_lgrade" value="" id="f_lgrade" readonly="readonly" > - <input type="text" name="f_hgrade" value="" id="f_hgrade" readonly="readonly" ></p>
+			<div id="gradeSlider"></div>
+			 <div id="stepBox">
+	             <table>
+	                <tr class="actionRow">
+	                   <td><a id="btnBack">&lsaquo; Back to school search</a></td>
+	                   <td class="right"><a id="btnAdd" class="aBtn aBtnBlue">Add School</a></td>
+	                </tr>
+	             </table>
+	         </div><!-- stepBox end -->
+		</form>
+	  </div><!-- schoolAdd end -->
+   </div><!-- schoolPane end -->
+EOF;
+
+$wizTab=<<< EOF
+   <ul class="tabs wizTabs">
+      <li class="tabLeft"><a id="schoolTab" href="#school">Find your School<b><i></i></b></a></li>
+      <li class="tabMid1"><a id="photoTab" href="#photo">Update your Teacher Profile<b><i></i></b></a></li>
+      <li class="tabMid2"><a id="urlTab" href="#class">Claim classroom webpage url<b></b></a></li>
+   </ul>
+EOF;
+$photoTitle="Set your profile picture";
+$lastPane="<div id='lastPane'>Transferring to status page...</div>";
+
+print <<< CON
+<div class="pageCont">
+   <div class="page">
+      <div class="mask"$noWiz>
+         <div id="tabBox">
+         $wizTab
+         </div>
+         <div class="panes">
+            $schoolPane
+            <div id="photoPane">
+               <h2>To get started upload a profile photo. You can change this at any time.</h2>
+               <div class="prData">
+                  <div id="prPhotoCont" class="prImageCont">
+                     <div id="prPhoto" class="prImageBox">
+                        <div><img src="$user_image"></div>
+                        <a class="smaller removePhoto" href="#">Remove your photo</a>
+                        <span class="smaller">Display Size: 200x260</span>
+                     </div><!-- prPhoto end -->
+                     <div id="prUpload" class="prUploadBox">
+                        <div id="uploadBox" class="uploadBtn">       
+                          <noscript>          
+                              <p>Please enable JavaScript to use file uploader.</p>
+                          </noscript>         
+                        </div>
+                        <p class="smaller">Maximum size of 700K. JPG, GIF, PNG</p>
+                     </div><!-- prUpload end -->
+                  </div><!-- prPhotoCont end -->
+               </div><!-- prData end -->
+				<div class="prClass">
+					<form id="frmAddClass" method="post" action="{$_SERVER['PHP_SELF']}">
+			         <table>
+			            <tr class="dataRow">
+			               <th><label for="f_classes1">Name of your classroom:</label></th>
+			               <td>{$input['classes']}</td>
+			               <td class='alignBottom'><a class="inputAddBtn" title="Add another class"></a></td>
+			            </tr>
+					</table>
+					</form>
+				</div>
+            </div><!-- photoPane end -->
+			<div id="urlPane">
+				<div id="changeUrl">
+					<h3>Choose a URL to make it easier for your students to find you</h3>
+					<label for="f_url">http://www.educator.com</label> <input id="f_login" name="f_login" type="text" value="$uul">
+				</div>
+			</div><!-- urlPane end -->
+         </div><!-- panes end -->
+		 <div id="stepBox">
+             <table class="prBtn">
+                <tr class="actionRow">
+                   <td><a class="actPrev aBtn">Back to Step 1</a></td>
+                   <td class="right"><a class="actNext aBtn aBtnBlue">Next Step</a></td>
+                </tr>
+             </table>
+         </div><!-- stepBox end -->
+      </div><!-- mask end -->
+   </div><!-- page end -->
+CON;
+?>
+<script type="text/javascript" src="/js/fileuploader.js"></script>
+<script type="text/javascript" src="/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script type="text/javascript">
+var user={
+   login:'<?=$ul?>',
+	minl:"<?php echo Am_Di::getInstance()->config->get('login_min_length');?>",
+	maxl:"<?php echo Am_Di::getInstance()->config->get('login_max_length');?>",
+   page:'profile'
+};
+$(document).ready(function(){
+	$('#schoolAddBtn').click(
+		function(){
+			$('#schoolFind').hide();
+			$('#schoolAdd').show();
+		}
+	);
+	$('#btnBack').click(
+		function(){
+			$('#schoolAdd').hide();
+			$('#schoolFind').show();
+		}
+	);
+	
+	var prevSearch='';
+	var keyTimer=0;
+	var xhr;
+	var limit=25;
+	$('#findSchool').keyup(
+		function(evt){
+			var key=evt.which;
+			var ARRUP = 38;
+			var ARRDN = 40;
+			var RETURN = 13;
+			var TAB = 9;
+			var ESC = 27;
+			var bubble = true;
+			var dd=$('#schoolDd');
+
+			switch(key)
+			{
+				case ARRUP:
+					schoolFocus(key);
+					bubble = false;
+					break;
+				case ARRDN:
+					schoolFocus(key);
+					bubble = false;
+					break;
+				case RETURN:
+					bubble = false;
+					if (dd.length==0 || dd.children().length==0) break;
+					var ddn=dd.get(0).n;
+					if (ddn>0){
+						var row=dd.children().eq(ddn-1);
+						schoolSelect(row);
+					}
+					break;
+				case ESC:
+					dd.empty().hide();
+					schoolReset()
+					$('#findSchool').val($('#findSchool').attr('defaultValue'));
+					break;
+				default:
+					if (this.value==prevSearch) return;
+					if (this.value.length<3){
+						schoolReset();
+						dd.empty().hide();
+						break;
+					}
+					prevSearch=this.value;
+					if (dd.length && this.value.length>=dd[0].s.length){
+						var ddc=dd.children();
+						ddc.filter('.disabled').remove();
+						var t,io;
+						var v=this.value.toUpperCase();
+						for (var i=0;i<ddc.length;i++){
+							t=ddc[i].innerText || ddc[i].textContent;
+							if (t.search(RegExp(v))==-1) ddc[i].style.display='none';
+							else {
+								ddc[i].style.display='block';
+								io=t.indexOf(v);
+								t=t.substring(0,io)+'<em>'+t.substring(io,io+v.length)+'</em>'+t.substring(io+v.length);
+								ddc[i].innerHTML=t;
+							}
+						}
+						if (dd.height()==0) dd.append('<dd class="disabled">- not found -</ddc>');
+						if (!dd.visible) dd.slideDown('fast');
+						if (ddc.length % limit) return;
+					}
+					schoolReset();
+					keyTimer=setTimeout(schoolFind,250);
+			}
+
+			if (!bubble) evt.preventDefault();
+		}
+	);
+	var schoolReset=function(){
+		clearTimeout(keyTimer);
+		if (xhr && xhr.readyState!=4 && xhr.readyState!=0) xhr.abort();
+		$('#findSchool').removeClass('ajax_loader_si');
+	}
+	var schoolFocus=function(key){
+		var dd=$('#schoolDd');
+		if (dd.length==0 || dd.children().length==0) return false;
+		var ddn=dd.get(0).n;
+		var n=(key==40)? ddn+1: ddn-1;
+		if (n>dd.children().length) n=dd.children().length;
+		if (n<1) n=1;
+		if (!dd.is(':visible')) dd.slideDown('fast');
+		
+		dd.children().get(ddn-1).className='';
+		ddn=n;
+		dd.children().get(ddn-1).className='focus';
+		dd.get(0).n=ddn;
+		
+		var sc;
+		var dp=dd.children().eq(n).position().top;
+		if (dp>dd.height()) sc=dp-dd.height()+dd.scrollTop();
+		else if (dp<1) sc=dd.scrollTop()+dd.children().eq(n-1).position().top;
+		if (sc>-1) dd.scrollTop(sc);
+	}
+	var schoolFind=function(){
+		var fs=$('#findSchool');
+		var s=fs.val().toUpperCase();
+		var dd=$('#schoolDd');
+		if (dd.length==0) {
+			var pos=fs.position();
+			pos.top=pos.top+fs.height()+10;
+			dd=$('<dl />').appendTo('#schoolFind')
+				.attr('id','schoolDd')
+				.addClass('brShadow')
+				.css({top:pos.top,left:pos.left,width:fs.width()})
+				.click(
+					function(evt){
+						if (evt.target.nodeName=='DD'){
+							var row=$(evt.target);
+							if (row.hasClass('disabled')) return;
+							schoolSelect(row);
+						}
+					})
+				.scroll(
+					function(evt){
+						if (this.scrollTop+this.clientHeight+50>this.scrollHeight) schoolScroll();
+					})
+				;
+			$('body').click(
+				function(evt){
+					if (evt.target.nodeName=='DD') return;
+					if (dd.is(':visible')) dd.slideUp();
+				}
+			);
+			dd[0].s='';dd[0].n=0;
+		}
+		fs.addClass('ajax_loader_si');
+		_ajax.error=false;
+		xhr=$.post('/ajax/school_find.php',"s="+s+"&l="+limit,
+			function(data,status){
+				fs.removeClass('ajax_loader_si');
+				_ajax.error=true;
+				if (status=='success') dd.html(data);
+				else dd.html('');
+				if (dd.find('dd').length){
+					dd.scrollTop(0);
+					schoolHilite(dd);
+					if (!dd.is(':visible')) dd.slideDown('fast');
+					dd.get(0).s=s;
+					dd.get(0).n=0;
+				}else{
+					dd.hide();
+				}
+			},
+			'text'
+		);
+	}
+	
+	var schoolSelect=function(row){
+		var school=row.text().replace(/ :.*/,'');
+		var fs=$('#findSchool');
+		fs.val(row.text());
+		if (school==fs.attr('defaultValue')) return;
+		fs.addClass('ajax_loader_si');
+		$('#schoolDd').hide();
+		$.post('/setprofile','f_school='+school+'&submit_pi=ajax',
+			function(data,status){
+				if (data!='success') showError(data);
+				fs.removeClass('ajax_loader_si');
+			},
+			'text'
+		);
+	}
+	var schoolScroll=function(){
+		var dd=$('#schoolDd');
+		var offset=dd.find('dd').length;
+		if (offset % limit || _ajax.running) return;
+		var s=dd.get(0).s;
+		var fs=$('#findSchool').addClass('ajax_loader_si');
+		_ajax.error=false;
+		xhr=$.post('/ajax/school_find.php',"s="+s+"&l="+limit+"&o="+offset,
+			function(data,status){
+				fs.removeClass('ajax_loader_si');
+				_ajax.error=true;
+				if (status=='success') {
+					var cl=dd.children().length;
+					dd.append(data);
+					schoolHilite(dd,cl);
+				}
+			},
+			'text'
+		);
+	}
+	var schoolHilite=function(dd,start){
+		if (typeof start=='undefined') start=0;
+		var ddc=dd.children();var io;
+		var v=$('#findSchool').val().toUpperCase();
+		for (var i=start;i<ddc.length;i++){
+			t=ddc[i].innerText || ddc[i].textContent;
+			io=t.indexOf(v);
+			t=t.substring(0,io)+'<em>'+t.substring(io,io+v.length)+'</em>'+t.substring(io+v.length);
+			ddc[i].innerHTML=t;
+		}
+	}
+	
+	var grades=new Array("Prekindergarten","Kindergarten","Transitional Kindergarten","1st grade","Transitional 1st grade","2nd grade","3rd grade","4th grade","5th grade","6th grade","7th grade","8th grade","9th grade","10th grade","11th grade","12th grade","Higher Education");
+	    $( "#gradeSlider" ).slider({
+      range: true,
+      min: 0,
+      max: 16,
+      values: [ 0, 16 ],
+      slide: function( event, ui ) {
+        $("#f_lgrade").val(grades[ui.values[ 0 ]] );
+		$('#f_hgrade').val(grades[ui.values[ 1 ]] );
+      }
+    });
+    $("#f_lgrade").val(grades[$( "#gradeSlider" ).slider( "values", 0 )]);
+	$("#f_hgrade").val(grades[$( "#gradeSlider" ).slider( "values", 1 )]);
+
+	$('#btnAdd').click(
+		function(){
+         if (!_ajax.running){
+			frm=$('form#frmAddSchool');
+            url=frm.attr("action");
+            type=(frm.attr("method")).toUpperCase();
+			if (!($('#f_school').val() && $('#f_address').val() && $('#f_city').val() && $('#f_state').val() && $('#f_zip').val() )){
+				alert('Please enter complete information for the school.');
+				return false;
+			}
+			$('#f_school').val($('#f_school').val().toUpperCase());
+			$('#f_address').val($('#f_address').val().toTitleCase());
+			$('#f_city').val($('#f_city').val().toTitleCase());
+			$('#f_state').val($('#f_state').val().toTitleCase());
+            data=serializeData(frm.get(0))+'&submit_pi=ajax';
+            onAjax('show');
+            $.post(url,data,
+               function(data,status){
+                  onAjax('hide');
+                  if (data=='success'){
+					$('#findSchool').val($('#f_school').val()+' : '+$('#f_city').val()+', '+$('#f_state').val()+' '+$('#f_zip').val());
+                     $('#btnBack').click();
+                  }else{
+                     showError(data);
+                  }      
+               },
+               'text'
+            );
+        }
+	  }
+	);
+	
+	var onAjax=function(a){
+		if (a=='show'){
+			$('<div />').appendTo('#schoolAdd').addClass('overlay').css({width:$('#schoolAdd').width(),height:$('#schoolAdd').height()});
+		}else{
+			$('#schoolAdd').find('div.overlay').remove();
+		}
+	}
+});
+</script>
+</div><!-- pageCont end -->
+
+<?php include($tmpl."footer.html");
+?>

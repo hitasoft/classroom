@@ -1,0 +1,56 @@
+<?php 
+$this->setLayout('admin/user-layout.phtml'); 
+$title = ___('Affiliate Information');
+$this->enableReports(); ?>
+<div>
+<?php echo $form; ?>
+</div>
+
+<?php echo $report; ?>
+<br />
+<h1><?php __e('Report') ?></h1>
+<div class="grid-container">
+<table class="grid">
+<tr>
+    <th><?php __e('Date') ?></th>
+    <th><?php __e('Commission earned') ?></th>
+    <th><?php __e('Clicks') ?></th>
+</tr>
+<?php
+/* @var $result Am_Report_Result */
+$lines = $result->getLines();
+/* @var $quant Am_Report_Quant_Date */
+$quant = $result->getQuantity();
+foreach ($result->getPoints() as $point):
+if (!$point->hasValues()) continue;
+/* @var $point Am_Report_Point */
+print "<tr>";
+printf("    <td>%s</td>\n", $point->getLabel());
+foreach ($lines as $line) {
+    list($start, $stop) = $quant->getStartStop($point->getKey());
+    printf("    <td><a href='javascript:affDetail(\"%s\", \"%s\", \"%s\")' class='aff-detail'>%s</a></td>\n", $start, $stop, $point->getLabel(), $point->getValue($line->getKey()));
+}
+print "</tr>";
+endforeach;
+?>
+</table>
+</div>
+
+<div id="aff-detail">
+</div>
+
+<script type="text/javascript">
+function affDetail(from, to, label)
+{
+    var url = "<?php j($this->pUrl(
+            'admin', 'info-tab-detail', 'aff', 'user_id', $this->user_id,
+            'from', 'FROMDATE', 'to', 'TODATE'))?>";
+    jQuery("#aff-detail").load(url.replace(/FROMDATE/, encodeURIComponent(from)).replace(/TODATE/, encodeURIComponent(to)), function(){
+        jQuery("#aff-detail").dialog({
+            title: '<?php __e('Affiliate Commission Details for') ?>' + ' ' + label,
+            width: 700,
+            heigth: 300
+        });
+    });
+}
+</script>

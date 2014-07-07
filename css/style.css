@@ -1,0 +1,63 @@
+#follow-btn{
+	background-color: #c10000;
+	border: 0px;
+	border-radius: 3px;
+	color: #fff;
+	padding: 5px 11px;
+}
+
+#follow-btn:hover{
+	cursor:pointer;
+}
+
+.follower-content{
+	width: 380px;
+	border-bottom: 1px solid #e8e8e8;
+	border-right: 1px solid #e8e8e8;
+	border-left: 1px solid #e8e8e8;
+}
+
+.follower-content:first-child{
+	border-top: 1px solid #e8e8e8;
+}
+
+.follower-image{
+	float: left;
+	margin-left: 12px;
+	padding-top: 12px;
+	width: 60px;
+	padding-bottom: 7px;
+}
+
+.follower-name{
+	float: left;
+	margin-left: .5em;
+	padding-top: .625em;
+}
+
+.follower-name p{
+	font-weight: bold;
+	color: #333;
+}
+
+.follower-name span{
+	color: #999;
+}
+
+.follower-btn{
+	float: right;
+	padding-right: .75em;
+	vertical-align: middle;
+	margin-top: 19px;
+}
+
+.follower-btn input {
+padding: 7px 13px;
+vertical-align: middle;
+font-family: inherit;
+background-color: #eee;
+}
+
+.follower-container{
+	padding: 50px 210px;
+}

@@ -1,0 +1,131 @@
+<?php $title = ___('Account Settings'); 
+$bodyClass='settingsPage';
+$this->setLayout('member/layout.phtml'); ?>
+<?php echo $this->blocks('member/profile/top') ?>
+<?php 
+global $root_dir;
+if (!include($_SERVER['DOCUMENT_ROOT'].'/incl/base.php')) die('Base classes not found');
+
+$frm = $this->form->renderEasyArray(); // get html elements to include into your custom html
+//echo "<pre>".print_r($frm,true)."</pre>";
+
+$user_image=getUserImage($ul);
+$maxsize=ini_get('upload_max_filesize');
+$atitle=array(
+  'Professor'=>'Professor',
+  'Doctor'=>'Doctor',
+  'Assistant Professor'=>'Assistant Professor',
+  'Associate Professor'=>'Associate Professor',
+  'Professor Emeritus'=>'Professor Emeritus',
+  'Research Professor'=>'Research Professor',
+  ' '=>'[none]');
+if (array_key_exists($user['title'],$atitle)){
+   $seltitle=$user['title'];
+}else{
+   if (!$user['title']) $user['title']=' ';
+   $seltitle=' ';
+}
+$parray=$dbc->arrays("SELECT school FROM live_profile WHERE amember_id={$user['user_id']}");
+$parray=unserialize($parray[0]['school']);
+$school=$parray[0];
+?>
+<div class="am-form">
+<?php include $this->_script('_error.phtml'); ?>
+	<form <?php echo $frm['attributes']; ?>>
+		<fieldset><legend>Profile Picture</legend>
+            <div id="prPhotoCont" class="prImageCont">
+               <div id="prPhoto" class="prImageBox">
+                  <div><img src="<?=$user_image?>"></div>
+                  <a class="smaller removePhoto" href="#">Remove your photo</a>
+                  <span class="smaller">Display Size: 200x260</span>
+               </div><!-- prPhoto end -->
+               <div id="prUpload" class="prUploadBox">
+                  <div id="uploadBox" class="uploadBtn">       
+                    <noscript>          
+                        <p>Please enable JavaScript to use file uploader.</p>
+                    </noscript>         
+                  </div>
+                  <p class="smaller">Maximum size of 700K. JPG, GIF, PNG</p>
+               </div><!-- prUpload end -->
+            </div><!-- prPhotoCont end -->
+		</fieldset>
+		<fieldset><legend>Personal Information</legend>
+			<table>
+				<tr><th><label for="email-0">Primary Email</label></th></tr>
+				<tr><td><?php echo $frm['elements']['email-0']['htmle']; ?></td></tr>
+			</table>
+			<table>
+				<tr><th><label for="f_title">Title</label></th><th><label for="name_f-0">First Name</label></th><th><label for="name_l-0">Last Name</label></th></tr>
+				<tr><td><select id="f_title" size="1">
+					<?php foreach($atitle as $k=>$v){
+						$sel=($v==$seltitle)?"selected='selected'":'';
+						echo "<option value='$k' $sel>$v</option>";
+					}?>
+					</select></td><td><?php echo $frm['elements']['name-0']['elements']['name_f-0']['htmle']; ?></td>
+					<td><?php echo $frm['elements']['name-0']['elements']['name_l-0']['htmle']; ?></td>
+				</tr>
+			</table>
+			<table>
+				<tr><th><label for="f_country">Country</label></th></tr>
+				<tr><td><?php echo $frm['elements']['row-address-0']['elements']['f_country']['htmle']; ?></td>
+				</tr>
+			</table>
+			<div class="submitField"><?php echo str_replace('Profile','Personal Info',$frm['elements']['_submit_-0']['htmle']); ?></div>
+			<?php echo $frm['hidden'];echo "\n". $frm['javascript']; ?>
+		</fieldset>
+		<fieldset><legend>School</legend>
+			<table>
+				<tr><th><label for="f_school">Name of School where you teach</label></th></tr>
+				<tr><td><input type="text" value="<?=$school?>" id="f_school"></td></tr>
+			</table>
+			<div class="submitField"><input type="submit" value="Change School" id="c_school"></div>
+		</fieldset>
+		<fieldset><legend>Classroom URL</legend>
+			<p>http://www.educator.com/<input type="text" value="<?=$ul?>" disabled="disabled"></p>
+		</fieldset>
+	</form>
+</div>
+<script type="text/javascript" src="/js/fileuploader.js"></script>
+<script type="text/javascript">
+var user={
+   login:'<?=$ul?>',
+   page:'profile'
+};
+$(document).ready(function(){
+	$('input#c_school').click(
+		function(){
+			var param={};
+			param.school=$('input#f_school').val();
+			exSave(param,2,0);
+			return false;
+		}
+	);
+	
+	$('form#profile').validate({
+		submitHandler:
+			function(form){
+				var param={};
+				param.title=form.elements['f_title'].value;
+				exSave(param,1,form);
+			}
+	});
+	
+	function exSave(param,fs,form){
+		$('fieldset').eq(fs).addClass('ajax_loader');
+		$.post('/account/ajax.php',param,
+			function(response,status){
+				if (status=='success'){
+					if (response.status==1) {if (form) form.submit();}
+					else alert(response.status);
+				}else{
+					alert('A network issue occurred. Please try again!');
+				}
+				$('fieldset').eq(fs).removeClass('ajax_loader');
+			},'json'
+		);
+	}
+});
+</script>
+
+<?php include $this->_script('js.country_state.js'); ?>
+<?php echo $this->blocks('member/profile/bottom') ?>

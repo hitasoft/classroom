@@ -1,0 +1,307 @@
+<?php 
+$this->layoutNoTitle=1;
+$this->signupPage=1;
+$bodyClass='signupPage';
+$this->setLayout('layout.phtml'); 
+include $this->_script('_error.phtml');
+
+$this->headScript()
+        ->appendFile(REL_ROOT_URL . '/application/default/views/public/js/jquery/jquery.validate.js');
+
+$frm = $this->form->renderEasyArray(); // get html elements to include into your custom html
+if (Am_Di::getInstance()->auth->getUserId()) Am_Controller::redirectLocation('/'.Am_Di::getInstance()->auth->getUsername());
+//echo "<pre>".print_r($frm,true)."</pre>";
+?>
+
+<div class="am-signup" id="signup-main">
+<div id="signupCont">
+<h1>The best free way to manage your classroom</h1>
+<div class="col_main">
+   <div class="content">
+      <form <?php echo $frm['attributes']; ?>>
+         <fieldset>
+         <h2>Create a Free Account (Teachers only)</h2>
+<?php if ($_GET['_qf_EmailCode_display']) {
+	echo '<p>',$frm['elements']['email-confirm-message-0']['htmle'],'</p>';
+    echo '<div class="submitField"><input type="submit" value="Continue" ></div>';
+}else{ ?>
+		 <p>Already have a Classroom account? <a href="/login" title="Login to Classroom">Sign in</a>.</p>
+         <input type="hidden" id="product-1-3" name="product_id_page-0[]" value="1-3" data-first_price="0.00" data-second_price="" checked="checked">
+		
+
+         <table class="vedit" summary="Signup Form">
+         <tr class="infoField">
+            <th><label for="f_u_title">Title</label></th><td></td>
+         </tr>
+         <tr class="inputField">
+             <td><?php echo $frm['elements']['u_title-0']['htmle']; ?>
+             </td>
+            <td class="info">Select your title</td>
+         </tr>
+         <tr class="spacer">
+            <td colspan="2"> </td>
+         </tr>
+
+         <tr class="infoField">
+            <th><label for="f_name">Full name</label></th><td></td>
+         </tr>
+         <tr class="inputField">
+            <td width="218" nowrap="nowrap">
+               <?php $_namef=$frm['elements']['name-0'];echo $_namef['htmle']; $fullname_req=$_namef['elements']['name_f-0']['value'].($_namef['elements']['name_l-0']['value']?' '.$_namef['elements']['name_l-0']['value']:''); ?>
+               <input type="text" id="f_name" name="fullname" value="<?=$fullname_req?>" size="30" />
+				<?php echo $frm['elements']['login-0']['htmle']; ?>
+            </td>
+            <td class="info">Your First &amp; Last name</td>
+         </tr>
+         <tr class="infoField">
+            <td colspan="2">Your full name will appear on your Classroom page</td>
+         </tr>
+
+         <tr class="infoField">
+             <th><label for="email-0">Email</label></th><td></td>
+         </tr>
+         <tr class="inputField">
+            <td><?php echo $frm['elements']['email-0']['htmle']; ?>
+            </td>
+            <td class="info">We'll send a verification email</td>
+         </tr>
+         <tr class="infoField">
+            <td colspan="2">Note: Your email will not be publicly displayed</td>
+         </tr>
+
+         <tr class="infoField">
+             <th><label for="pass-0">Password</label></th><td></td>
+         </tr>
+         <tr class="inputField">
+             <td><?php echo $frm['elements']['pass-0']['htmle']; ?>
+             <?php echo $frm['elements']['pass-confirm']['htmle']; ?>
+             </td>
+            <td class="info">Must be <?php echo Am_Di::getInstance()->config->get('pass_min_length');?> or more characters</td>
+         </tr>
+         <tr class="spacer">
+            <td colspan="2"> </td>
+         </tr>
+
+         <tr class="infoField">
+            <th colspan="2"><label for="recaptcha_response_field">Type the code you see in the picture below</label></th>
+         </tr>
+         <tr class="inputField" id="captcha">
+            <td colspan="2">
+            <div id="recaptcha_widget_div" class="recaptcha_clean">
+                <div id="recaptcha_area">
+                    <table class="recaptchatable recaptcha_theme_white" id="recaptcha_table">
+                        <tbody>
+                            <tr>
+                                <td class="recaptcha_r1_c1" colspan="6">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="recaptcha_r2_c1">
+                                </td>
+                                <td class="recaptcha_image_cell" colspan="4">
+                                    <div id="recaptcha_image">
+                                        <img id="captchaCode" src="/incl/captcha.php">
+                                    </div>
+                                </td>
+                                <td class="recaptcha_r2_c2">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="recaptcha_r3_c1" rowspan="6">
+                                </td>
+                                <td class="recaptcha_r3_c2" colspan="4">
+                                </td>
+                                <td class="recaptcha_r3_c3" rowspan="6">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td height="49" class="recaptcha_r4_c1" rowspan="3">
+                                    <div class="recaptcha_input_area">
+                                        <label class="recaptcha_input_area_text" for="recaptcha_response_field">
+                                            <span class="recaptcha_only_if_no_incorrect_sol" id="recaptcha_instructions_image">
+                                                Type the number:
+                                            </span>
+                                            <span class="recaptcha_only_if_incorrect_sol" id="recaptcha_instructions_error">
+                                                Incorrect. Try again.
+                                            </span>
+                                        </label>
+                                        <br>
+                                        <input type="text" id="recaptcha_response_field" size="6" maxlength="5" value="" autocomplete="off">
+                                    </div>
+                                </td>
+                                <td class="recaptcha_r4_c2" rowspan="4">
+                                </td>
+                                <td>
+                                    <a id="recaptcha_reload_btn" title="Get a new challenge">
+                                       <img width="25" height="17" id="recaptcha_reload" src="http://www.google.com/recaptcha/api/img/white/refresh.gif" alt="Get a new challenge">
+                                    </a>
+                                </td>
+                                <td class="recaptcha_r4_c4" rowspan="4">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a class="recaptcha_only_if_image" id="recaptcha_switch_audio_btn" title="Not available">
+                                       <img width="25" height="16" alt="Get an audio challenge" id="recaptcha_switch_audio" src="http://www.google.com/recaptcha/api/img/white/audio.gif">
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a id="recaptcha_whatsthis_btn" href="http://www.google.com/recaptcha/help" target="_blank" title="Help">
+                                       <img width="25" height="16" id="recaptcha_whatsthis" src="http://www.google.com/recaptcha/api/img/white/help.gif" alt="Help">
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="recaptcha_r7_c1">
+                                </td>
+                                <td class="recaptcha_r8_c1">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            </td>
+         </tr>
+          <tr class="infoField">
+            <td colspan="2">This verification keeps robot spammers away</td>
+         </tr>
+         </table>
+
+         </fieldset>
+         <p>By clicking <b>Sign Up</b> you agree to the <a href="/tos.php" target="_blank">Terms of Service</a> and <a href="/privacy.php" target="_blank">Privacy Policy</a><br>and confirm that you are at least 13 years old.</p>
+         <div class="submitField"><?php echo $frm['elements']['buttons']['htmle']; ?></div>
+		<?php }
+		echo $frm['hidden']; ?>
+      </form>
+   </div>
+</div><!-- end colRight -->
+<div class="col_left">
+   <div class="content">
+      <h2>A place to connect, collaborate and share <br>content with your students.</h2>
+      <img src="/image/live-clipart.png" alt="">
+      <h3>Create a website</h3>
+      <p>Create a website in 30 seconds! <br>(<a id="aExample">www.educator.com/username</a>)</p>
+      <h3>Manage &amp; Connect</h3>
+      <p>Teachers can post grades, upload assignments, and share knowledge via the web.</p>
+      <h3>Unlimited free hosting</h3>
+      <p>Digital storage for class documents (syllabus, practice tests, and study guides) and have access anytime, anywhere.</p>
+      <h3>Example Teacher Website:</h3>
+      <div class="exampleSite">
+         <a href="http://www.educator.com/starkey" title="Dr. Laurie Starkey"><img src="/image/prof/starkey.png" alt="Dr Laurie Starkey" width="60" height="78"></a>
+         <div>
+            <p>Dr. Laurie Starkey</p>
+            <p>Professor, teaching Organic Chemistry lecture<br>and laboratory classes.</p>
+            <p><a href="http://www.educator.com/starkey">http://www.educator.com/starkey</a></p>
+         </div>
+      </div>
+   </div>
+</div><!-- end colLeft -->
+<div class="col_mid"></div>
+</div><!-- end signupCont -->
+
+<script type="text/javascript">
+function isBlank(A){return A.replace(/\s+/g,"").length==0}
+
+$(document).ready(function(){
+   $('input:text,input:password').focus(
+      function(){
+         $(this).parent().next('.info').fadeIn();
+      }
+   ).blur(
+      function(){
+         $(this).parent().next('.info').fadeOut();
+      }
+   );
+	var prevLogin = "";   
+	var timeout = null;
+   var overlay=null;
+
+	jQuery.validator.addMethod("regex", function(value, element, params) {
+		return this.optional(element) || new RegExp(params[0],params[1]).test(value);
+		}, "Invalid Value");
+		
+   $("#page-0").validate({
+		groups: {
+			fullName: "name_f name_l"
+		},
+   	onkeyup: function(element) {
+		if ( element.name in this.submitted || element == this.lastElement ) {
+       		this.element(element);
+   		}
+   	},
+		ignore: ':hidden',
+    	rules: {
+			"fullname":{"required":true,"fullName":true},
+			"email":{"required":true,"email":true,"remote":{"url":"\/account\/ajax?do=check_uniq_email"}},
+			"pass":{"required":true,"rangelength":["<?php echo Am_Di::getInstance()->config->get('pass_min_length');?>","<?php echo Am_Di::getInstance()->config->get('pass_max_length');?>"]}
+		},
+		messages: {
+			fullname:{"required":"Please enter your first name and last name"},
+			email:{"required":"Please enter your email address"},
+			pass:{"required":"Please enter desired password","rangelength":"Password must contain at least <?php echo Am_Di::getInstance()->config->get('pass_min_length');?> letters or digits"}
+		},
+		success: function(label) {
+			label.html("OK").attr("class","valid");
+		},
+      errorElement: 'td',
+		errorPlacement: function(error, element) {
+			//error.appendTo(element.parent().next());
+         element.parent().next('td').replaceWith(error);
+		},
+      submitHandler:
+         function(form){
+            $('#pass-confirm').val($('#pass-0').val());
+			$('#login-0').val('_tmp_'+$('#f_name').val().substr(0,5).replace(/\s*/g,'')+(1.123456+Math.random()*10).toString(36).substr(2,5));
+            form.submit();
+         }
+   });
+   $('#recaptcha_reload_btn').click(getNewCaptcha);
+   function getNewCaptcha(){
+      rand=(new Date).getTime();
+      $('#captchaCode:visible').css('visibility','hidden')
+         .parent().addClass('ajax_loader_s');
+      $('#recaptcha_response_field').val('').focus();
+      $('#captchaCode').attr('src','/incl/captcha.php?'+rand)
+         .css('visibility','visible')
+         .parent().removeClass('ajax_loader_s');
+      $('#recaptcha_widget_div').removeClass('recaptcha_wrong')
+         .addClass('recaptcha_clean');
+   }
+
+   $.validator.addMethod("fullName",function(value,element){
+		if (isBlank(value)){
+			return false
+		}else{
+			an=jQuery.trim(value).split(" ");
+			if (an.length==2){
+				$("input[name='name_f']").val(an[0]);
+				$("input[name='name_l']").val(an[1]);
+				return true
+			}else{
+				$("input[name='name_f']").val(an[0]);
+				$("input[name='name_l']").val('');
+				return true   // changed to allow single name
+			}
+		}
+	},"Please enter both your first name and last name");
+
+   $('#f_name').focus();
+   
+   $('#aExample').click(function(){$('#f_name').focus()});
+});
+
+/*/ Google Analytics
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-24046804-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+ var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+*/
+</script>

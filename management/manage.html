@@ -1,0 +1,144 @@
+<?php
+/*
+ *      manage.html
+ *      
+ *      Management page
+ *      
+ */
+
+$title="Management Panel - ".$_title;
+$page = "pg-manage";
+include($tmpl."header.html");
+
+echo<<<EOF
+<style type="text/css">
+   #pg-manage #entryBox {background:#efefef;border:1px solid #c6c6c6;padding:20px;margin:20px auto;position:relative;}
+   #pg-manage #entryBox h1 {margin:0;position:absolute;top:42px;right:70px;color:#fff;}
+   #pg-manage .panes {margin:0 3.5em;}
+   #pg-manage .panes>div {position:relative;}
+   #pg-manage #usersPane>div.actionBar {min-height:16px;}
+   #pg-manage #usersPane>div.actionBar>div {float:none;margin:0 auto;}
+   #tblUsers td>a>img {height:80px;width:80px;}
+   #tblUsers thead th {background:#555;color:#fff;font-weight:bold;padding:4px;text-align:left;border-bottom:thin solid #c6c6c6;cursor:pointer;}
+   #tblUsers tbody td {border-bottom:thin solid #c6c6c6;}
+   #pg-manage #usersPane>span {display:block;text-align:right;padding:10px 0;}
+   #dimMask {position:absolute;background:#fff url(/css/spinner_l.gif) no-repeat center center;}
+</style>
+EOF;
+
+$table=sprintf("<table id='tblUsers' class='sortable'><thead><tr><th id='order_login'>User</th><th id='order_fname'>Name</th><th id='order_email'>Email</th><th id='order_added'>Joined</th><th class='sorttable_numeric' id='order_posts'>Posts</th></tr></thead><tbody>%s</tbody></table>",$trs);
+$rows=count($parray);
+
+echo<<<EOF
+<div class="page">
+   <div id="entryBox">
+      <h1>Management Panel</h1>
+      <ul class="tabs">
+         <li class="tabLeft"><a id="usersTab" href="#users">Current Users</a></li>
+         <li class="tabMid1"><a id="adminTab" href="#admin">Admin Panel</a></li>
+      </ul>
+      <div class="panes">
+         <div id="usersPane">
+            <span><input type="checkbox" id="cbSort"><label for="cbSort"> Sort all users</label></span>
+            $table
+            <div id="offset_$rows" class="actionBar"></div>
+         </div>
+         <div id="adminPane">
+            <h2>Administration Panel</h2>
+         </div>
+      </div>
+   </div>
+</div>
+EOF;
+?>
+
+<script type="text/javascript" src="/js/sorttable.js"></script>
+<script type="text/javascript">
+var user={
+   login:'<?=$ul?>',
+   page:'manage'
+};
+
+(function(){
+   var api=$("ul.tabs").tabs("div.panes > div",
+      {
+         effect:'fade',
+         history:true,
+      }
+   ).data('tabs');
+
+   $(window).scroll(function(){
+         if  ($(window).scrollTop() > $(document).height() - $(window).height() - 2){
+           getNext();
+         }
+      });
+
+   function getNext(){
+      var ac=$('#usersPane>div.actionBar').get(0);
+      var acid=ac.id.split('|');
+      var offset=parseInt(acid[0].replace(/offset_/,''));
+      if (offset){
+         $(ac).attr('id',ac.id.replace(new RegExp('_'+offset),'_0')).append('<div class="ajax_loader_si"></div>');
+         url='/management/index.php';
+         orderby=acid[1];
+         orderdir=acid[2];
+         data={submit:'ajax',offset:offset,orderby:orderby,orderdir:orderdir};
+         $.post(url,data,
+            function(data,status){
+               $(ac).empty();
+               if (data.indexOf('<tr><td')==0){
+                  $('table#tblUsers>tbody').append(data);
+                  offset=$('table#tblUsers>tbody>tr').length;
+                  $('.sorttable_sorted,.sorttable_sorted_reverse').removeClass('sorttable_sorted sorttable_sorted_reverse').find('span').remove();
+               }      
+               ac.id=ac.id.replace(/offset_0/,'offset_'+offset);
+            },
+            'text'
+         );
+      }
+   }
+
+   $('table#tblUsers>thead').click(
+      function(evt){
+         var th;
+         if (evt.target.nodeName=='TH') th=$(evt.target);
+         else if (evt.target.parentNode.nodeName=='TH') th=$(evt.target.parentNode);
+         else return;
+         
+         if (!th.hasClass('sorttable_nosort') && $('#cbSort').is(':checked')) {
+            var tbl=$('table#tblUsers');
+            var mask=$('<div id="dimMask"></div>').css({left:tbl.position().left,top:tbl.position().top,width:tbl.width(),height:tbl.height(),opacity:0}).appendTo('#usersPane').fadeTo('fast',0.3);
+            var orderby=th.attr('id').replace(/order_/,'');
+            var orderdir=(th.hasClass('sorttable_sorted'))?'desc':'asc';
+            var url='/management/index.php';
+            var data={submit:'ajax',orderby:orderby,orderdir:orderdir};
+            $.post(url,data,
+               function(data,status){
+                  if (data.indexOf('<tr><td')==0){
+                     $('table#tblUsers>tbody').empty().append(data);
+                     var ac=$('#usersPane>div.actionBar').get(0);
+                     ac.id='offset_15|'+orderby+'|'+orderdir;
+                     $('.sorttable_sorted,.sorttable_sorted_reverse').removeClass('sorttable_sorted sorttable_sorted_reverse').find('span').remove();
+                     var dirFlag={}
+                     dirFlag.desc = stIsIE ? '&nbsp<font face="webdings">5</font>' : '&nbsp;&#x25B4;';
+                     dirFlag.asc = stIsIE ? '&nbsp<font face="webdings">6</font>' : '&nbsp;&#x25BE;';
+                     dirFlag.desc_id = 'sorttable_sortrevind';
+                     dirFlag.asc_id = 'sorttable_sortfwdind';
+                     th.addClass('sorttable_sorted'+((orderdir=='desc')?'_reverse':''));
+                     $('<span />').html(dirFlag[orderdir]).attr('id',dirFlag[orderdir+'_id']).appendTo(th);
+                  }      
+                  mask.fadeOut(function(){mask.remove()});
+               },
+               'text'
+            );
+         }
+      }
+   );
+})();
+
+</script>
+
+<?php
+include($tmpl."footer.html");
+?>
+

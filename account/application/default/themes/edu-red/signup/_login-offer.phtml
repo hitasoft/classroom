@@ -1,0 +1,16 @@
+<?php if (empty($this->noLoginOffer)):?>
+<!-- login box on signup page widget -->
+<?php if (!Am_Di::getInstance()->auth->getUserId()):?>
+<p>Already have a Classroom account? <a href="/login" title="Login to Classroom">Sign in</a>.</p>
+<?php endif // if not logged-in ?>
+<script type="text/javascript">
+jQuery(function($){
+    // setup new submit handler to form which will reload signup page after login
+    amAjaxLoginForm(".am-login-form form", {
+            success: function() { window.location.reload(true); }
+        }
+    );
+});
+</script>
+<!-- login box on signup page widget end -->
+<?php endif ?>

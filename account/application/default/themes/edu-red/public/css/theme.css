@@ -1,0 +1,308 @@
+/** 
+    This CSS file is included into <head> of each user template after amember.css
+    and before site.css (if it is exists).
+
+    There you can see variable %bgcolor% - it is configured in setup form 
+    (see application/default/themes/sample/Theme.php) and now substituted here.
+    Files with variables must be added to special list ($publicWithVars) of Am_Theme
+    class and these files are routed via special URL. Routed via URL, it is cached
+    in browser for 1 hour.
+
+    @link Am_View->printLayoutHead()
+*/
+/* reset am styles */
+.am-body {background:transparent;}
+.am-main {width:980px;max-width:none;padding:0;margin:0 auto;display:block;}
+.am-body .am-body-content-wrapper {border:none;background:transparent;padding:0 0 25px;}
+.am-body-content {margin-top:20px;padding:0;border:8px solid #e9ecef;background:#e9ecef;position:relative;}
+.am-tabs {float:left;margin-bottom:-2000px;padding:0 20px 2000px 8px;min-height:100%;}
+.am-body-content>.am-form,.am-body-content>#loginCont,
+.am-layout-two-coll {overflow:hidden;padding:0 2px 3px;}	/* for menu column */
+.am-tabs>ul {background:#fff;padding:0;margin:0;border:1px solid #dfe4e8;border-bottom:none;font-size:12px;text-align:left;
+	-moz-border-radius:0;-webkit-border-radius:0;border-radius:0;}
+.am-tabs>ul li {float:none;display:block;border-bottom:1px solid #dfe4e8;margin:0;padding:0;}
+.am-tabs>ul li.active {background:#f3f5f6;}
+.am-tabs>ul a {background:none;border:none;padding:1.2em 5em 1.2em 1em;color:#3784d3;text-shadow:none;}
+.am-tabs>ul li.active a {background:none;font-weight:normal;text-shadow:none;color:#3784d3;}
+.am-form form {
+	-moz-border-radius:0;-webkit-border-radius:0;border-radius:0;
+}
+.am-form fieldset {border-bottom:1px solid #dfe4e8;padding-bottom:20px;}
+.am-form fieldset:last-child {border-bottom:none;padding-bottom:40px;}
+.am-info {overflow:hidden;}
+
+/* settings page */
+.settingsPage .am-form fieldset legend {color:inherit;background:none;text-shadow:none;padding:2em 0;float:left;}
+.settingsPage form#profile fieldset>p,
+.settingsPage form#profile fieldset>table {width:95%;margin:0 auto;}
+.settingsPage form#profile th {color:#999;font-weight:normal;font-size:0.857em;padding:0 4px;}
+.settingsPage form#profile td {padding:0 4px 22px;}
+.settingsPage form#profile td input[type='text'] {width:95%;}
+.settingsPage form#profile td select {margin:0;}
+.settingsPage form#profile td input#email-0 {width:98.4%;}
+.settingsPage form#profile div.submitField {width:95%;margin:10px auto;padding:15px 0 0 10px;}
+.settingsPage form#profile div.submitField>input {margin:0;padding:0 1.2em;background:royalblue;width:auto;font-weight:normal;font-size:16px;border-radius:3px;}
+.settingsPage .am-form span.error {display:inline;font-size:0.857em;}
+.settingsPage fieldset.ajax_loader {background:url(/css/spinner_l.gif) no-repeat right 5px;}
+
+/* password (profile) page */
+form#profile div#row-name-0,
+form#profile div#row-email-0,
+form#profile fieldset#row-address-0 {display:none;}
+
+/* login page */
+.loginPage .am-body-content {border:0;background:none;margin-top:30px;}
+#loginCont,#loginFoot {width:934px;margin:5px auto 0;background:url(/css/login-bg.png) no-repeat 0 0;padding:0!important;}
+#loginFoot {background-image:url(/css/login-ft.png);height:15px;margin:0 auto 42px;}
+#loginCont>div {text-align:left;font-size:12px;line-height:1.2;}
+#loginCont h2 {color:#b10501;text-align:left;font-size:24px;font-weight:bold;font-family:Helvetica,sans-serif;margin:10px 0 0;}
+#loginCont .col_main {width:500px;float:left;}
+#loginCont .col_right {float:right;padding:0 20px 0 10px;width:400px;border-left:1px solid #e5e5e5;height:300px;margin:30px 0 18px;}
+#loginCont form#frmLogin {margin:50px 40px 0;}
+#loginCont form#frmSendpass {display:none;margin:20px 10px 10px 30px;}
+#loginCont form#frmSendpass table.vedit {margin-bottom:17px;}
+#loginCont form input,#loginCont form textarea,#loginCont form select,#loginCont form option
+{font-size:12px;}
+#loginCont form input.text {width:330px;margin:6px 0 16px;padding:2px;}
+#loginCont form select {height:25px;padding-left:4px;color:#4F4F4F;} 
+#loginCont form label {color:#666;font-weight:normal;font-size:11px;display:block;margin-top:10px;}
+#loginCont a.button {background:url(/css/button-grad-a.png) no-repeat right top transparent;color: #FFF;display: block;float: left;font-size: 12px;font-weight: bold;height: 23px;margin-right: 6px;padding: 0 18px 0 0;border:none;text-decoration: none;cursor:pointer;}
+#loginCont a.button span {background: url(/css/button-grad-l.png) no-repeat 0 0 transparent;display: block;line-height: 13px;padding: 5px 0 5px 18px;}
+#loginCont .actionRow td {padding-left:3px;}
+#loginCont .actionRow input {position:absolute;left:-10000px;visibility:hidden;}
+a#forgetBtn {float:right;color:#b10501;cursor:pointer;margin-right:80px;}
+a#forgetBtn:hover,a#forgetBtn:focus,a#forgetBtn:active {text-decoration:underline;}
+#loginCont .headRow p {font-size:16px;color:#666;font-weight:bold;font-family:Arial,Helvetica,Geneva,Verdana,sans-serif;padding:14px 0 6px;border-top:1px solid #ccc;margin:38px 20px 0 3px;}
+#frmSendpass .headRow p {margin:8px 0;font-size:0;padding:0;}
+#loginCont .col_right h3 {color:#333;font-size:14px;margin:20px 0 8px;font-weight:bold;}
+#loginCont .col_right ul {color:#666;line-height:18px;list-style:none;padding:0 0 22px 2px;}
+#loginCont .col_right ul>li {background:url(/css/bullet.gif) no-repeat 0 center;padding-left:12px;}
+#loginCont p.spaced {font-size:13px;line-height:19px;letter-spacing:0.2px;color:#222;}
+#loginCont form>p.spaced {margin-top:13px;}
+#loginCont form#frmLogin>p.spaced {margin-top:30px;font-family:Arial,Verdana,Helvetica,sans-serif;font-size:12px;}
+p.spaced a {color:#b10501;}
+p.spaced a:hover {text-decoration:underline;}
+#loginCont a#signupBtn {margin-left:10px;}
+.loginPage ul.errors {margin:5px 40px;padding:0.5em 1em;border:1px solid #ccddeb;border-radius:6px;background:#dfe8f0;color:red;}
+
+/* signup page */
+.signupPage {background:url(/css/signup-grad.png) repeat-x 0 88px;}
+.signupPage .am-body-content {margin-top:0;border:0;background:transparent;}
+#signupCont>h1 {height:90px;padding:0;margin:0;text-indent:-10000px;background:url(/image/slogan.png) no-repeat center center;}
+#signupCont h2, #signupCont h3 {color:#333;font-family:'trebuchet ms',tahoma,arial,sans-serif;font-size:120%;font-weight:bold;}
+#signupCont div.content {text-align:left;font-size:12px;}
+#signupCont .col_main {width:502px;}
+#signupCont .col_left {width:478px;}
+#signupCont .col_main .content {padding:30px 10px 0 25px;color:#5e5e5e;}
+#signupCont .col_left .content {padding:25px 0 0 5px;background:transparent;}
+#signupCont .content h2 {text-align:left;font-weight:normal;font-size:20px;line-height:1.1em;padding-bottom:5px;}
+#signupCont .col_main .content h2 {color:#5e5e5e;}
+#signupCont .col_left .content>img {float:right;margin:10px 15px 10px 0;}
+#signupCont .col_left .content h3 {margin-top:20px}
+#signupCont .col_left .content>p {padding:0 0 10px 0;}
+#signupCont .col_left .content>div.exampleSite {margin:10px 15px;}
+#signupCont .col_left .content a {cursor:pointer;}
+
+div.exampleSite>a {display:block;float:left;margin:0 20px;}
+div.exampleSite p {line-height:1.3;padding:0 0 8px;}
+#signupCont .col_mid {width:0;height:280px;margin:200px 0 0 476px;border-left:1px solid #bbb;}
+#signupCont form#page-0 fieldset {background:#ebebeb;border:1px solid #FA6800;
+   -moz-border-radius:6px;-webkit-border-radius:6px;border-radius:6px;
+   /*-moz-box-shadow:0 0 0 1px #FED36E, 0 0 0 1px #FFC104;-webkit-box-shadow:0 0 0 1px #FED36E, 0 0 0 1px #FFC104;box-shadow:0 0 0 1px #FED36E, 0 0 0 1px #FFC104;*/
+   margin:2px 0 30px;padding-left:6px;
+}
+#signupCont form#page-0 fieldset h2,#signupCont form#page-0 fieldset p,#signupCont form#page-0 th,#signupCont form#page-0 td {padding-left:6px;}
+#signupCont form#page-0 fieldset>h2 {margin:15px 0 2px;text-transform:uppercase;}
+#signupCont form#page-0 fieldset>p {margin:0 0 12px;}
+#signupCont form#page-0 table.vedit th {text-align:left;color:#333;font-weight:bold;}
+
+#signupCont #name_f-0,
+#signupCont #name_l-0,
+#signupCont #login-0,
+#signupCont #pass-confirm {display:none;}
+
+table.vedit {border:none;border-collapse:separate;margin:0;}
+table.vedit th,
+table.vedit td{border:none;background:transparent;vertical-align:top;padding:0;line-height:1.25;}
+table.vedit tr.inputField th,
+table.vedit tr.inputField td {vertical-align:middle;}
+table.vedit tr.inputField th {padding-right:10px;}
+table.vedit tr.inputField input {width:230px;padding:5px;font-size:18px;border:1px solid #AAA;}
+table.vedit tr.inputField select {width:240px;}
+table.vedit tr.infoField td {font-size:10px;color:#666;padding:3px 0 10px;}
+table.vedit tr.spacer td {padding:3px 0 15px;}
+table.vedit tr.submitField td {padding-top:5px;}
+div.submitField {padding:15px 0 0 12px;}
+.submitField input,
+.submitField button {height:33px;width:153px;cursor:pointer;
+   background:url(/css/account-btn.png) no-repeat scroll 0 0 transparent;
+   color:#FFFFFF;font-size:20px;font-family:Tunga,'Trebuchet MS',tahoma,arial,sans-serif;
+   font-weight:bold;white-space:nowrap;border:none;padding-bottom:2px;
+}
+.submitField input:hover,
+.submitField button:hover {background-position:0 -33px}
+#signupCont form#page-0 .submitField input {background-image:url(/css/signup-btn.png);text-indent:-999px;}
+#signupCont form#page-0 tr#captcha td {padding:0;}
+#signupCont form#page-0 span.error {font-size:10px;}
+
+table.vedit #liveDom {color:#0037ff;}
+table.vedit #liveURL {color:red;font-weight:bold;}
+table.vedit td.info,
+table.vedit td.checking,
+table.vedit td.valid,
+table.vedit td.error {border:1px solid #dbdbdb;border-width:1px 0;font-size:11px;padding:0 3px 0 24px!important;}
+table.vedit td.info {color:#666;background:#f2f2f2 url(/image/icon/16/balloon-white.png)no-repeat 4px center;display:none;}
+table.vedit td.valid {color:darkgreen;background:#F0FEE9 url(/image/icon/16/tick.png)no-repeat 4px center;border-color:#D1EFCB;}
+table.vedit td.error {color:#b10501;background:#FFCFCF url(/image/icon/16/exclamation.png)no-repeat 4px center;font-style:normal;border-color:#E5A3A3;}
+table.vedit td.checking {color:#78801B;background:#F5FFCF url(/css/spinner_s.gif)no-repeat 4px center;border-color:#E3E5A3;}
+table.vedit input.error {color:inherit;}
+
+table.errmsg {width:70%;background:lightyellow;border-width:2px;}
+table.errmsg td ul {padding-left:20px;}
+table.errmsg td li {padding:5px 0;}
+
+/* reCaptcha */
+.recaptchatable .recaptcha_r1_c1 {
+    background:url("/image/captcha.png") no-repeat scroll 0 -63px transparent;
+    height:9px;
+    width:318px;
+}
+.recaptchatable .recaptcha_r2_c1 {
+    background:url("/image/captcha.png") no-repeat scroll -18px 0 transparent;
+    height:57px;
+    width:9px;
+}
+.recaptchatable .recaptcha_r2_c2 {
+    background:url("/image/captcha.png") no-repeat scroll -27px 0 transparent;
+    height:57px;
+    width:9px;
+}
+.recaptchatable .recaptcha_r3_c1 {
+    background:url("/image/captcha.png") no-repeat scroll 0 0 transparent;
+    height:63px;
+    width:9px;
+}
+.recaptchatable .recaptcha_r3_c2 {
+    background:url("/image/captcha.png") no-repeat scroll -18px -57px transparent;
+    height:6px;
+    width:300px;
+}
+.recaptchatable .recaptcha_r3_c3 {
+    background:url("/image/captcha.png") no-repeat scroll -9px 0 transparent;
+    height:63px;
+    width:9px;
+}
+.recaptchatable .recaptcha_r4_c1 {
+    background:url("/image/captcha.png") no-repeat scroll -43px 0 transparent;
+    height:49px;
+    width:171px;
+}
+.recaptchatable .recaptcha_r4_c2 {
+    background:url("/image/captcha.png") no-repeat scroll -36px 0 transparent;
+    height:57px;
+    width:7px;
+}
+.recaptchatable .recaptcha_r4_c4 {
+    background:url("/image/captcha.png") no-repeat scroll -214px 0 transparent;
+    height:57px;
+    width:97px;
+}
+.recaptchatable .recaptcha_r7_c1 {
+    background:url("/image/captcha.png") no-repeat scroll -43px -49px transparent;
+    height:8px;
+    width:171px;
+}
+.recaptchatable .recaptcha_r8_c1 {
+    background:url("/image/captcha.png") no-repeat scroll -43px -49px transparent;
+    height:8px;
+    width:25px;
+}
+.recaptchatable .recaptcha_image_cell center img {
+    height:57px;
+}
+.recaptchatable .recaptcha_image_cell center {
+    height:57px;
+}
+.recaptchatable .recaptcha_image_cell {
+    background-color:white;
+    height:57px;
+}
+#recaptcha_area, #recaptcha_table {
+    width:318px !important;
+}
+.recaptchatable, #recaptcha_area tr, #recaptcha_area td, #recaptcha_area th {
+    border:0 none !important;
+    border-collapse:collapse !important;
+    margin:0 !important;
+    padding:0 !important;
+    vertical-align:middle !important;
+}
+.recaptchatable * {
+    border:0 none;
+    bottom:auto;
+    font-size:8pt;
+    left:auto;
+    margin:0;
+    padding:0;
+    position:static;
+    right:auto;
+    text-align:left !important;
+    top:auto;
+}
+.recaptchatable #recaptcha_image {
+    margin:auto;
+    text-align:center !important;
+}
+.recaptchatable #recaptcha_image img {}
+.recaptchatable img {
+    border:0 none !important;
+    margin:0 !important;
+    padding:0 !important;
+}
+.recaptchatable a, .recaptchatable a:hover {
+    background:none repeat scroll 0 0 transparent !important;
+    border:0 none !important;
+    color:blue;
+    font-weight:normal;
+    outline:medium none;cursor:pointer;
+    padding:0 !important;
+    text-decoration:none;
+}
+.recaptcha_input_area {
+    background:none repeat scroll 0 0 transparent !important;
+    height:45px !important;
+    margin-left:20px !important;
+    margin-right:5px !important;
+    margin-top:4px !important;
+    position:relative !important;
+    width:146px !important;
+}
+.recaptchatable label.recaptcha_input_area_text {
+    background:none repeat scroll 0 0 transparent !important;
+    bottom:auto !important;
+    height:auto !important;
+    left:auto !important;
+    margin:0 !important;
+    padding:0 !important;
+    position:static !important;
+    right:auto !important;
+    top:auto !important;
+    width:auto !important;
+}
+.recaptchatable #recaptcha_response_field {
+    bottom:7px !important;
+    font-size:10pt;
+    margin:0 !important;
+    padding:0 3px !important;
+    position:absolute !important;
+    width:124px !important;
+}
+.recaptchatable {
+    line-height:1em;
+}
+#recaptcha_instructions_error {
+    color:red !important;
+}
+.recaptcha_wrong .recaptcha_only_if_no_incorrect_sol, .recaptcha_clean .recaptcha_only_if_incorrect_sol {
+    display:none !important;
+}

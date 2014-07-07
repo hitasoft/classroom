@@ -1,0 +1,44 @@
+<?php
+if (!function_exists('autover')){
+	function autover($url){
+	    $path = pathinfo($url);
+	    if (file_exists($_SERVER['DOCUMENT_ROOT'].$url)){
+	      $ver = '.'.filemtime($_SERVER['DOCUMENT_ROOT'].$url).'.';
+	    }else{
+	      $ver = '.';
+	      trigger_error($_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'],E_USER_WARNING);
+	    }
+	    echo $path['dirname'].'/'.str_replace('.', $ver, $path['basename']);
+	}
+}
+//echo '<!-- '.print_r($_SESSION,true)."\n".print_r($_COOKIE,true).'-->';
+echo $this->doctype('XHTML1_TRANSITIONAL');
+?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title><?php echo $title ?></title>
+        <?php $this->printLayoutHead(); ?>
+		<link rel="stylesheet" type="text/css" href="<?php autover($liveDir.'/css/live.css'); ?>" />
+		<script type="text/javascript" src="<?php autover($liveDir.'/js/live.js'); ?>"></script>
+    </head>
+    <body id="account">
+<?php echo $this->placeholder('body-start');
+$_login=Am_Di::getInstance()->auth->getUsername();
+include $_SERVER["DOCUMENT_ROOT"].'/tmpl/header-inc.html';
+$this->noUserIdentityBlock=1;
+?>
+   <div class="am-body <?=$bodyClass ?>">
+       <div class="am-body-content-wrapper am-main">
+           <div class="am-body-content">
+               <?php $this->blocks('content/before'); ?>
+               <?php include $this->_script('_top.phtml'); ?>
+               <!-- content starts here -->
+               <?php echo $content ?>
+           </div>
+       </div>
+   </div>
+<?php 
+echo $this->placeholder('body-finish');
+include $_SERVER["DOCUMENT_ROOT"].'/tmpl/footer.html';
+?>

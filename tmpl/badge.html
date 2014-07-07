@@ -1,0 +1,207 @@
+<?php
+/*
+ *      badge.html
+ *      
+ *      Display the badge 
+ *      
+ */
+
+$title="Create a badge - ".$_title;
+$page = "pg-badge";
+include($tmpl."header.html");
+
+$badgeContent=<<<CON
+<!-- Educator-Connect Badge BEGIN -->
+<a href="http://www.educator.com/$ul" target="_TOP" title="{$liveUser['name_f']} {$liveUser['name_l']}">
+<img src="BadgeSrc" width="BadgeWt" height="BadgeHt" style="border:0">
+</a>
+<!-- Educator-Connect Badge END -->
+CON;
+$badgeContent=htmlspecialchars($badgeContent,ENT_QUOTES);
+
+print <<< CON
+   <div class="page">
+      <div class="mask"><div class="outer-border">
+         <div id="badgeCont" class="backend-wrapper">
+            <div>
+            
+            <table>
+               <thead>
+                  <tr>
+                     <th width="20%"><h2>Create a badge</h2></th>
+                     <th width="25%"><b>Preview:</b></th>
+                     <th> </th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr valign="top">
+                     <td>
+                        <b>Size:</b>
+                        <table>
+                           <tr>
+                              <td width="20"><input type="radio" name="bSize" id="bSizeS" value="s"></td>
+                              <td><label for="bSizeS">Small</label></td>
+                           </tr>
+                           <tr>
+                              <td><input type="radio" name="bSize" id="bSizeM" value="m"></td>
+                              <td><label for="bSizeM">Medium</label></td>
+                           </tr>
+                           <tr>
+                              <td><input type="radio" name="bSize" id="bSizeL" value="l"></td>
+                              <td><label for="bSizeL">Large</label></td>
+                           </tr>
+                        </table>
+                     </td>
+                     <td>
+                        <div id="badgeAtt">
+                           <img src="" alt="Badge Preview">
+                        </div>
+                     </td>
+                     <td>
+                        <b>Choose where to add badge:</b>
+                        <input type="hidden" id="badgeContent" value="$badgeContent"/>
+                        <form class="badgeAttachBtn" id="btnBlogger" target="_new" method="post" action="http://www.blogger.com/add-widget">
+                           <input type="hidden" name="infoUrl" value="http://connect.educator.com"/>
+                           <input type="hidden" name="logoUrl" value="http://connect.educator.com/image/edu-icon.png"/>
+                           <input type="hidden" name="widget.title" value="Educator-Connect Badge"/>
+                           <input type="hidden" name="widget.template" value="&lt;data:content/&gt;" />
+                           <input type="hidden" name="widget.content" class="badgeContent" value=""/>
+                           <input type="image" name="go" src="/image/badge_add_blogger.png" value="Add to Blogger"/>
+                        </form>
+                        <form class="badgeAttachBtn" id="btnTypePad" action="https://www.typepad.com/t/app/weblog/design/widgets" target="_new" method="POST">
+                           <input type="hidden" value="52616e646f6d495629493343fe175d128dc948bce34ead172a37d2c073eeb41b3e7d1491f25075375591dd520973c4aec64634ea734f35d4" name="service_key">
+                           <input type="hidden" value="Educator-Connect" name="service_name">
+                           <input type="hidden" value="http://www.educator.com/$ul" name="service_url">
+                           <input type="hidden" value="Educator-Connect Badge" name="long_name">
+                           <input type="hidden" value="edu_badge" name="short_name">
+                           <input type="hidden" value="" name="content" class="badgeContent">
+                           <input type="hidden" value="http://connect.educator.com/" name="return_url">
+                           <input type="image" name="go" src="/image/badge_add_typepad.png" value="Add to TypePad"/>
+                        </form>
+                        <div class="badgeAttachBtn" id="btnOther">
+                           <input type="image" src="/image/badge_add_other.png" value="Other"/>
+                        </div>
+                        <div id="badgeAttachOther">
+                           <p>Copy the code below and paste it on your website.
+                              <input class="badgeContent" onclick="this.select()" id="" name="" value="" readonly="readonly" type="text">
+                           </p>
+                        </div>
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+         </div></div></div>
+      </div><!-- mask end -->
+   </div><!-- page end -->
+
+CON;
+?>
+<script type="text/javascript">
+var user={
+   login:'<?=$ul?>',
+   badge:'<?=$fnBadge?>',
+   page:'badge'
+};
+if (user.page=='badge'){
+   initBadge();
+}
+function initBadge(){
+   var BADGE_DIR="/users/badges/";
+   var bSize=$('#badgeCont input:radio');
+   bSize.click(
+      function(){
+         onClickSize(this);
+      }
+   );
+   if (user.badge){
+      setAttach(false);
+      setPreview();
+   }else{
+      bSize.get(1).checked=true;
+      onClickSize(bSize.filter(':checked').get(0));
+   }
+   function setAttach(e){
+      var dis='disabled';
+      if (e){
+         bSize.removeAttr(dis);
+         $('.badgeAttachBtn>input:image').removeAttr(dis);
+         $('#badgeAttachOther input').removeAttr(dis).select();
+      }else{
+         bSize.attr(dis,dis);
+         $('.badgeAttachBtn>input:image').attr(dis,dis);
+         $('#badgeAttachOther input').attr(dis,dis);
+      }
+   }
+   function setPreview(){
+      $('#badgeAtt>img').attr('src',BADGE_DIR+user.badge+'?'+(new Date).getTime())
+         .css('opacity',0.5);
+      var oImg=new Image();
+      oImg.src=$('#badgeAtt>img').attr('src');
+      var getDim=function(){
+         setTimeout(function(){
+            if (!oImg.complete){
+               getDim();
+            }else{
+               var bcText=$('#badgeContent').val()
+                  .replace(/BadgeSrc/,'http://connect.educator.com'+BADGE_DIR+user.badge)
+                  .replace(/BadgeWt/,oImg.width)
+                  .replace(/BadgeHt/,oImg.height);
+               $('input.badgeContent').val(bcText);
+               // enable attach
+               $('#badgeAtt>img').animate({opacity:1});
+               setAttach(true);
+               // select correct size option
+               for (var size in {l:"l",m:"m",s:"s"}){
+                  if (getSize(size).w==oImg.width)
+                     break;
+               }
+               bSize.filter('[value="'+size+'"]').get(0).checked=true;
+            }
+         },500);
+      };
+      getDim();
+   }
+   function onClickSize(t){
+      // disable attach
+      setAttach(false);
+      // save badge
+      var param=getSize(t.value);param.save=true;
+      $.post('/badge.php',param,
+         function(response,status){
+            if (response.indexOf('.png')>0){
+               user.badge=response;
+               // show badge
+               setPreview();
+            }else{
+               showError(response);
+            }
+         }
+      )
+   }
+   $('#btnOther>input').click(
+      function(){
+         $('#badgeAttachOther').fadeToggle();
+         setTimeout(function(){$('#badgeAttachOther input:visible').select();},500);
+         return false;
+      }
+   );
+
+   function getSize(s){
+      var w=76;var h=110;
+      switch(s){
+         case 'm':
+            w=114;h=165;
+            break;
+         case 'l':
+            w=152;h=220;
+            break;
+         default:
+      }
+      return {w:w,h:h};
+   }
+}
+</script>
+<?php>
+include($tmpl."footer.html");
+?>
+

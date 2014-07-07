@@ -1,0 +1,30 @@
+<?php
+$title = $di->config->get('site_title') . ' : ' . ___('Your Basket');
+$this->setLayout('cart/layout-wide.phtml');
+$isBasket = true;
+?>
+<div class="am-cart-checkout">
+    <div>
+        <?php if (count($cart->getItems())) : ?>
+        <form action="<?php $this->pUrl('index', 'view-basket') ?>" method="post">
+            <?php include $this->_script('cart/_basket.phtml')  ?>
+            <div class="am-cart-checkout-coupon">
+                <?php __e("Enter Coupon Code:") ?> <input type="text" name="coupon" value="<?php p($cart->getCouponCode()) ?>" size="16"/>
+                <?php if (!empty($coupon_error)): ?>
+                    <div class="error"><?php p($coupon_error) ?></div>
+                <?php endif ?>
+            </div>
+            <div class="am-cart-checkout-buttons">
+            <input type="submit" name="calculate" value="<?php __e('Update') ?>" />
+            <input type="submit" name="do-checkout" value="<?php __e('Checkout') ?>" />
+            <input type="submit" name="do-return" value="<?php __e('Return') ?>" />
+            <input type="hidden" name="b" value="<?php p($b) ?>"/>
+            </div>
+        </form>
+        <?php else: ?>
+            <div class="am-cart-checkout-empty">
+                <?php __e('Your cart is empty. Click %shere%s to continue shopping.', '<a href="' . REL_ROOT_URL . '/cart">', '</a>') ?>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>

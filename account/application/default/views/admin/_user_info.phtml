@@ -1,0 +1,23 @@
+<?php
+    $request = Zend_Controller_Front::getInstance()->getRequest();
+    $user_id = $request->getInt('user_id');
+    if(!$user_id) $user_id = $request->getInt('_u_id');
+    if(!$user_id) return;
+    $user = Am_Di::getInstance()->userTable->load($user_id, false);
+    if(!$user) return;
+?>
+<div class="info">
+    <?php 
+    printf('%s#: <strong>%d</strong>, %s: <strong>%s</strong>%s, %s: <strong>%s</strong>, %s: <a href="mailto:%s"><strong>%s</strong></a>',
+        ___('User'), $user->user_id,
+        ___('Login'), $user->login,
+        $di->authAdmin->getUser()->hasPermission('grid_u', 'login-as') ?
+            sprintf(' <a href="%s" target="_blank"><strong>%s</strong></a>',
+                $this->escape(Am_Controller::makeUrl('admin-users', 'login-as', 'default', array('id' => $user->pk()))),
+                ___('Login as User')) : '',
+        ___('Name'), Am_Controller::escape($user->name_f." ".$user->name_l),
+        ___('Email'), Am_Controller::escape($user->email),
+        Am_Controller::escape($user->email)
+        );
+    ?>
+</div>

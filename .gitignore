@@ -1,0 +1,12 @@
+account-v3/
+cgi-bin/
+error_log
+.ftpquota
+imagecache/
+screenshots/
+.smileys/
+users/*
+~*
+*~
+*#
+.wysiwygPro_preview*

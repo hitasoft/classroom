@@ -1,0 +1,23 @@
+<?php /* Shopping cart contents */ ?>
+<div class="am-basket-preview">
+<?php if (count($cart->getItems())) : ?>
+    <table class="am-basket-preview-items">
+    <?php foreach ($cart->getItems() as $item): ?>
+    <tr class="am-basket-preview-item">
+        <td class="am-basket-preview-item-title"><?php p($item->item_title) ?></td>
+        <td class="am-basket-preview-item-qty"><?php p($item->qty) ?></td>
+        <td class="am-basket-preview-item-total"><?php p($this->cart->getCurrency($item->first_total)) ?></td>
+    </tr>
+    <?php endforeach ?>
+    </table>
+    <div class="am-basket-preview-actions">
+        <a href="<?php $this->pUrl(null, 'view-basket') ?>"><?php __e('View Basket')?></a>
+    |
+        <a href="<?php $this->pUrl(null, 'checkout') ?>"><?php __e('Checkout')?></a>
+    </div>
+<?php else: ?>
+    <div class="am-basket-preview-empty">
+        <?php __e('Your cart is empty. Click %shere%s to continue shopping.', '<a href="' . REL_ROOT_URL . '/cart">', '</a>') ?>
+    </div>
+<?php endif; ?>
+</div>

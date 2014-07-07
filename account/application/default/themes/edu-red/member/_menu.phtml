@@ -1,0 +1,19 @@
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+    $('.am-tabs li:has(ul) > a').prepend(
+        $('<div></div>').addClass('arrow')
+    );
+});
+</script>
+<?php
+	$menuList=array('/account/settings','/help','/account/profile','/privacy');
+	$actClass=array('',' class="active"');
+?>
+<div class="am-tabs">
+	<ul>
+		<li<?php echo $actClass[(int) (strpos($_SERVER['REQUEST_URI'],$menuList[0])===0)]; ?>><a href="/account/settings">Account Settings</a><i></i></li>
+		<li<?php echo $actClass[(int) (strpos($_SERVER['REQUEST_URI'],$menuList[1])===0)]; ?>><a href="/help">Help</a><i></i></li>
+		<li<?php echo $actClass[(int) (strpos($_SERVER['REQUEST_URI'],$menuList[2])===0)]; ?>><a href="/password">Password</a><i></i></li>
+		<li<?php echo $actClass[(int) (strpos($_SERVER['REQUEST_URI'],$menuList[3])===0)]; ?>><a href="/privacy">Privacy</a><i></i></li>
+	</ul>
+</div>

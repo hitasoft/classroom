@@ -1,0 +1,20 @@
+/*
+ Auto Generating Photo Gallery
+ by Chris Coyier
+ http://css-tricks.com
+*/
+
+* { margin: 0; padding: 0; }
+body { font-size: 10px; font-family: Georgia, serif; background: white; }
+
+a img, img { border: none; }
+
+#page-wrap { width: 800px; margin: 0 auto; }
+
+.photo-link { margin: 5px; float: left; height:38px;}
+.photo-link a {border: 1px solid #ddd; padding: 5px; display:block;}
+.photo-link a:hover, photo-link a.second-link:hover { border-color: red; }
+.photo-link a.second-link {padding:2px 0;line-height:12px;border:none;width:16px;text-align:center;}
+
+.sz32 {outline: 1px dotted green;}
+.sz24 {outline: 1px dotted blue;}

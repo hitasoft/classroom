@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+   <title><?=$title?></title>
+   
+   <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+   <meta property="og:title" content="<?=$title?>"/>
+   <meta property="og:description" content="<?=$description?>" />
+   
+   <link rel="stylesheet" type="text/css" media="screen" href="<?php autoVer($liveDir.'/css/live.css'); ?>" >
+   <link rel="stylesheet" type="text/css" media="screen" href="<?php autoVer($liveDir.'/css/style.css'); ?>" >
+<?php echo $extra_link; ?>
+  
+   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+   <script type="text/javascript" src="<?=$liveDir?>/js/jquery.tools.min.js"></script>
+   <!--script type='text/javascript' src='http://s7.addthis.com/js/250/addthis_widget.js#username=xa-4c9c08124795dd64'></script-->
+   <script type="text/javascript" src="<?php autoVer($liveDir.'/js/live.js'); ?>" ></script>
+</head>
+
+<body id="<?=$page?>">
+<?php
+$emailSite='http://'.substr($user['email'],strpos($user['email'],'@')+1);
+if ($user['is_approved']<1 && !$public && !$first_time) echo "<div id='noVerify'><div><span>{$user['name_f']}, go to {$user['email']} to complete the sign-up process.</span> <button onclick='window.open(\"$emailSite\",\"emailWindow\")'>Go to your email</button> <a href='#' onclick='resendEmail(this)'>Resend Email</a><span class='dot'>&middot;</span><a href='/account/profile?email=1'>Change Email Address</a></div></div>";
+if ($fbEnable){ ?>
+<div id="fb-root"></div>
+<script>
+ window.fbAsyncInit = function() {
+ //Replace appId with your own
+   FB.init({appId: '189072434457363', status: true, cookie: true,
+            xfbml: true});
+ };
+ (function() {
+   var e = document.createElement('script'); e.async = true;
+   e.src = document.location.protocol +
+     '//connect.facebook.net/en_US/all.js';
+   document.getElementById('fb-root').appendChild(e);
+ }());
+</script>
+<?php }
+include($tmpl.'/header-inc.html');
+?>

@@ -1,0 +1,23 @@
+#Far Future Expires Header
+<FilesMatch "\.(gif|png|jpg|js|css|swf)$">
+    ExpiresActive On
+    ExpiresDefault "access plus 10 years"
+</FilesMatch>
+
+Options +SymLinksIfOwnerMatch
+RewriteEngine on
+#RewriteRule ^(js|css|image)/(.+)\.(.+)\.(js|css|gif|png|jpg)$ $1/$2.$4 [L]
+RewriteRule ^index.php$ / [R=301]
+RewriteRule ^$ /signup [L]
+RewriteRule ^(signup|logout|profile|login).php$ /$1/ [R=301]
+RewriteRule ^(signup|logout|profile|login|account|password)$ /$1/ [R=301]
+RewriteRule ^(signup|logout|profile|login)/?$ /account/$1.php [L]
+RewriteRule ^(account)/?$ /account/member [R=301,L]
+RewriteRule ^(password)/?$ /account/profile [R=301,L]
+RewriteRule ^(terms-of-service)/?$ /tos.php [L]
+RewriteRule ^(privacy-policy)/?$ /privacy.php [L]
+RewriteRule ^(setprofile)$ /setprofile.php [L]
+RewriteRule ^(management)/?$ /management/index.php [L]
+RewriteRule ^([^/.]+)/?$ /content.php?u=$1 [L]
+
+##AddHandler application/x-httpd-php52  .php52 .php

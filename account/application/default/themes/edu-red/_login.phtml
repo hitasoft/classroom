@@ -1,0 +1,151 @@
+<div id="loginCont">
+<div class="col_main">
+    <?php echo $this->blocks('login/form/before') ?>
+    <form id="frmLogin" name="login" method="post" <?php if ($form_action) echo "action='$form_action'"; ?>>
+<h2>Sign In</h2>
+<table class="vedit" >
+    <tr class="dataRow" id="recaptcha-row" style="<?php if (empty($recaptcha)): ?>display: none;<?php endif?>" data-recaptcha-theme="<?php echo Am_Di::getInstance()->config->get('login_recaptcha_theme','red');?>">
+        <td class="element am-element-recaptcha" id="recaptcha-element">
+            <?php echo @$recaptcha ?>
+        </td>
+    </tr>
+   <tr class="headRow">
+      <td><label class="element-title" for="login"><?php __e('E-Mail Address or Username') ?></label></td>
+   </tr>
+   <tr class="dataRow">
+      <td><input type="text" id="login" name="amember_login" size="15" value="<?php p(@$_REQUEST['amember_login']) ?>" autofocus="autofocus" /></td>
+   </tr>
+   <tr class="headRow">
+      <td><label class="element-title" for="pass"><?php __e('Password') ?></label></td>
+   </tr>
+   <tr class="dataRow">
+      <td><input class="text" type="password" name="amember_pass" id="pass" size="15" /></td>
+   </tr>
+   <?php if (@$this_config['remember_login'] && !@$this_config['remember_auto']): ?>
+   <tr class="dataRow">
+      <td colspan="2" style='padding:0px; padding-bottom: 2px;'>
+         <input type="checkbox" id="remember" name="remember_login" value="1"<?php if (@$_REQUEST['remember_login']): ?>checked="checked"<?php endif ?>>
+         <label class="small" for="remember"><?php __e('Remember my password?') ?></label>
+      </td>
+   </tr>
+   <?php endif ?>
+   <tr class="actionRow">
+      <td>
+         <input type="submit" value="<?php __e('Login') ?>" />
+         <a id="signinBtn" class="button">
+            <span>Sign In</span>
+         </a>
+         <a id="forgetBtn"><?php __e('Forgot your password?') ?></a>
+      </td>
+   </tr>
+</table>
+<!-- hidden variables -->
+<?php echo Am_Controller::renderArrayAsInputHiddens($hidden) ?>
+<!-- end of hidden -->
+
+<p class="spaced">
+   By accessing this service, you agree to have read and accepted the terms set in this 
+   <a href="/terms-of-service/" target="_blank">policy statement</a>.
+</p>
+</form>
+<?php echo $this->blocks('login/form/after') ?>
+
+<form id="frmSendpass" name="sendpass" method="post" action="<?php echo REL_ROOT_URL ?>/sendpass">
+<h2><?php __e('Forgot your password?') ?></h2>
+<p class="spaced">
+   Please enter your Educator-Classroom primary email address, then click Continue.
+   We will email you a link to a page where you can access the password.
+</p>
+<table class="vedit">
+   <tr class="headRow">
+      <td><label for="sendpass1">Educator-Classroom Account E-Mail or Username</label></td>
+   </tr>
+   <tr class="dataRow">
+      <td><input type="text" name="login" id="sendpass1" size="15" /></td>
+   </tr>
+   <tr class="headRow">
+      <td><label for="sendpass2">Confirm Account E-Mail or Username</label></td>
+   </tr>
+   <tr class="dataRow">
+      <td><input class="text" type="text" name="confirm" size="15" id="sendpass2"/></td>
+   </tr>
+   <tr class="actionRow">
+      <td>
+         <input type="submit" value="<?php __e('Get Password') ?>" />
+         <a id="getpwdBtn" class="button">
+            <span>Continue</span>
+         </a>
+      </td>
+   </tr>
+</table>
+<p class="spaced">
+   <b>Has your email address changed?</b>
+   If you have forgotten your Educator-Classroom account email or no longer use the email address 
+   associated with your account, please contact us for assistance.
+</p>
+</form>
+</div>
+<div class="col_right">
+	<h3>What is Educator-Classroom?</h3>
+	<p class="spaced">
+		Educator-Classroom is a free service on Educator.com for teachers to 
+		create easily managed websites for their classroms.
+	</p>
+	<h3>Better manage your classroom</h3>
+	<ul>
+		<li>Easy to remember domain on Educator.com!</li>
+		<li>Unlimited hosting for syllabus, practice tests, and study guides.</li>
+		<li>Dynamic Calendar to keep your classroom updated.</li>
+	</ul>
+
+   <table class="vedit" >
+      <tr class="actionRow">
+         <td>
+            <a id="signupBtn" class="button" href="/signup">
+               <span>Create Account</span>
+            </a>
+         </td>
+      </tr>
+   </table>
+</div>
+</div>
+<div id="loginFoot"></div>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#sendpass').hide();
+   $('#signinBtn').click(
+      function(evt){
+         if ($('input#login').val()){
+            document.forms['login'].submit();
+         }else{
+            alert('Please enter your username');
+         }
+      }
+   );
+   $('#getpwdBtn').click(
+      function(evt){
+         $('input#sendpass1').val($.trim($('input#sendpass1').val()));
+         $('input#sendpass2').val($.trim($('input#sendpass2').val()));
+         if ($('input#sendpass1').val()){
+            if ($('input#sendpass1').val()==$('input#sendpass2').val()){
+               document.forms['sendpass'].submit();
+            }else{
+               alert('The email addresses or usernames do not match');
+            }
+         }else{
+            alert('Please enter your Educator-Classroom email or username');
+         }
+      }
+   );
+   $('#forgetBtn').click(
+      function(evt){
+         $('#frmLogin').hide();
+         $('#frmSendpass').show()
+            .parent().addClass('wider');
+         $('input#sendpass1').focus();
+      }
+   );
+   $('input#login').focus();
+   setTimeout(function(){$('ul.errors').slideUp()}, 6000);
+});
+</script>

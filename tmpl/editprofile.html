@@ -1,0 +1,62 @@
+<?php
+/*
+ *      editprofile.html
+ *      
+ *      Display the about content of live user
+ *      
+ */
+
+include($tmpl."header.html");
+
+// this is required to build sidebar menu
+$postTabs=<<<EOF
+                  <ul id="postTabs">
+                     <li id="pAboutTab"><a href="#pAbout" title="About"></a></li>
+                  </ul>
+EOF;
+$photoUp=(strpos($userPhoto,'dummy')>0)?'<a href="/settings" title="Upload a profile photo">Upload photo</a>':'';
+$userPhoto=getUserImage($ul);
+
+
+print <<< CON
+   <div id="pageBg">
+   <div class="page">
+      <div class="mask"><div class="outer-border">
+         <div class="col_main">
+            <div class="content">
+            <ul class="tabs">
+               <li><a href="">About</a></li>
+            </ul>
+            <div class="panes">
+               <div id="abtPane"></div>
+            </div>
+            </div>
+         </div>
+         <div class="col_left">
+            <div class="content">
+            $photoTop
+            <div id="prPhoto">
+               <img src="$userPhoto" title="$fname" alt="Profile photo">
+               $photoUp
+            </div>
+            </div>
+         </div>
+      </div></div>
+   </div>
+   </div>
+
+<script type="text/javascript">
+var user={
+   login:'$ul',
+   live:0,
+   name:'$fname',
+   amid:'${liveUser['user_id']}',
+   hometab:'${liveUser['hometab']}',
+   page:'status',
+   livedir:'$liveDir'
+};
+</script>
+CON;
+
+include($tmpl."footer.html");
+?>

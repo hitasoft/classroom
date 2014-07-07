@@ -1,0 +1,63 @@
+
+<div id="header" class="<?php echo ($public?"public":($_login?"login":"logout"));?>">
+	<div id="headerTop">
+		<div class="page">
+			<div id="headerTab">
+				<a href="http://www.educator.com" target="_blank">For Students</a>
+				<a class="active">For Teachers</a>
+			</div>
+	<?php if ($public || !$_login){?>
+		<div id="headerLogin" class="headerGear">
+			<span>Sign in &raquo;</span>
+		</div>
+	<?php }elseif(!$public && $_login){
+		if (!$ul) $ul=$_login;
+		if ($_GET['u']){	// status page
+			if (function_exists("getUserImage")) $user_image=getUserImage($ul,true);
+			$clUrl='http://www.educator.com/'.$ul;
+			$hdrTab="class='headerGlobe'><img src='$user_image' alt=''><span>$ul</span>";
+			$hdrLnk=<<<EOF
+			<div id='headerLnk'>
+				<div class="calloutContent" id="publicLink">
+					<div class="closeBtn"></div>
+					<p class="title">Your classroom website url:</p>
+					<p><a href="$clUrl" target="_blank">$clUrl</a></p>
+					<span class="button">
+						<a href="$clUrl" target="_blank">View as public &raquo;</a>
+					</span>
+				</div>
+			</div>
+EOF;
+		}else{
+			$hdrTab='class="headerGear"><span>Settings &raquo;</span>';
+			$hdrLnk='';
+		}
+		echo <<<EOF
+			<div id='headerPro'$hdrTab
+				<div><ul>
+				<li><a href='/account/settings'>Account Settings</a></li>
+				<li><a href='/faq'>Help</a></li>
+				<li><a href='/password'>Password</a></li>
+				<li><a href='/privacy'>Privacy</a></li>
+				<li><a href='/logout'>Logout</a></li>
+				</ul></div>
+			</div>
+			$hdrLnk
+EOF;
+	}?>
+			<a <?=$target?> href="http://classroom.educator.com" title="Educator-Classroom"><h1>Educator</h1></a>
+		</div><!-- page -->
+	</div>
+	<?php if (!$public && $_login && strpos($_SERVER['PHP_SELF'],'setprofile')===false){?>
+	<div class="page">
+	<div id="headerNav">
+		<ul id="navIcon">
+			<li><a id="navIconHome" title="Educator-Classroom Home" href="http://classroom.educator.com/<?=$_login?>">Home</a></li>
+			<li><a id="navIconProf" title="Educator-Classroom Profile" href="/editprofile.php">Profile</a></li>
+			<li><a id="navIconBadg" title="Educator-Classroom Badge" href="/badge.php">Badge</a></li>
+			<li><a id="navIconConn" title="Educator-Classroom Connections" href="/connections.php">Connections</a></li>
+		</ul>
+	</div><!-- headerNav -->
+	</div>
+	<?php }?>
+</div><!-- header -->

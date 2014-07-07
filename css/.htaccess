@@ -1,0 +1,5 @@
+# send them up!
+Options +SymLinksIfOwnerMatch
+RewriteEngine on
+RewriteRule ^/?$ / [R,NC]
+RewriteRule ^(.+)\.(.+)\.(css|gif|png|jpg)$ $1.$3 [L]

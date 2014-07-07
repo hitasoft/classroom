@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title><?php p(isset($meta_title) ? $meta_title : $title) ?></title>
+        <?php $this->printLayoutHead(); ?>
+    </head>
+    <body>
+        <?php echo $this->placeholder('body-start'); ?>
+        <div class="am-layout">
+            <a name="top"></a>
+            <div class="am-header">
+                <div class="am-header-content-wrapper am-main">
+                    <div class="am-header-content">
+                        <img class="am-header-content-logo" src="<?php
+                        if ($logo_id = $theme->getConfig('header_logo')) {
+                            /* @var $di Am_Di */
+                            $uplod = $di->uploadTable->load($logo_id);
+                            echo REL_ROOT_URL . '/upload/get/' . $uplod->path;
+                        } else {
+                            echo $this->_scriptImg('/header-logo.png');
+                        }
+                        ?>" alt="<?php p($di->config->get('site_title')) ?>" />
+                        <div class="am-header-content-content">
+                            <?php echo $theme->getConfig('header'); ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="am-header-line">
+
+            </div>
+            <div class="am-body">
+                <div class="am-body-content-wrapper am-main">
+                    <div class="am-body-content">
+                        <?php echo $this->blocks('content/before'); ?>
+                        <?php include $this->_script('_top.phtml'); ?>
+                        <?php echo $this->breadcrumbs() ?>
+                        <?php if (empty($this->layoutNoTitle)): ?>
+                            <h1><?php echo $title ?></h1>
+                        <?php endif; ?>
+                        <!-- content starts here -->
+                        <?php echo $content ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="am-footer">
+            <div class="am-footer-content-wrapper am-main">
+                <div class="am-footer-content">
+                    <div class="am-footer-actions">
+                        <a href="#top"><img src="<?php echo $this->_scriptImg('/top.png') ?>" /></a>
+                    </div>
+                    Built on <a href="http://www.amember.com/p/" style="text-decoration: none;">aMember Pro&trade; membership software</a>
+                </div>
+            </div>
+        </div>
+        <?php echo $this->placeholder('body-finish'); ?>
+    </body>
+</html>

@@ -1,0 +1,4 @@
+# send them up!
+Options +SymLinksIfOwnerMatch
+RewriteEngine on
+RewriteRule ^/?$ / [R,NC]
