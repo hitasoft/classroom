@@ -11,3 +11,6 @@ users/*
 ~*
 *~
 *#
+account/application/configs/config.php
+incl/db.class.php
+wdCalendar/php/dbconfig.php
