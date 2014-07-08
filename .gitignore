@@ -1,3 +1,4 @@
+account/data/
 account-v3/
 cgi-bin/
 error_log
@@ -6,8 +7,7 @@ imagecache/
 screenshots/
 .smileys/
 users/*
+.wysiwygPro_preview*
 ~*
 *~
 *#
-.wysiwygPro_preview*
-account/data/
