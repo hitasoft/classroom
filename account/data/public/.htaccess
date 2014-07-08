@@ -1,7 +1,0 @@
-<Limit GET POST>
-allow from all
-</Limit>
-RemoveHandler .php .phtml .php3 .php4 .php5 .php6
-RemoveType .php .phtml .php3 .php4 .php5 .php6
-php_flag engine off
-RewriteEngine Off
