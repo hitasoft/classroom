@@ -2,7 +2,7 @@
 
 $root_dir=$_SERVER["DOCUMENT_ROOT"];
 //if (substr($root_dir,-9)!='classroom') $root_dir.="/classroom";
-require_once ($root_dir.'/account/library/Am/Lite.php');
+require_once $root_dir.'/account/library/Am/Lite.php';
 $_title="Classroom@Educator.com";
 $user=Am_Lite::getInstance()->getUser();$own=false;
 //echo "<pre>".print_r($user,true)."</pre>";die();

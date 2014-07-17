@@ -55,7 +55,6 @@ if ($noClass){
    $classList="<div class='ajax_error_si'>$noClass.";
    $classList.=($public)?"</div>":"<br/><a href='/editprofile.php#class' title='Define new classes'>New Class</a></div>";
 }
-
 if (!(is_array($links) && count($links)>0)){
    $links=array(
       'title'=>array("Educator","TED Talks","Discovery Education"),
@@ -176,8 +175,6 @@ print <<< CON
                <li><a href="/$ul#videos">Videos</a></li>
                <li><a href="/$ul#calendar">Calendar</a></li>
                <li><a href="/$ul#files">Documents</a></li>
-			   <li><a href="/$ul#followers">Followers</a></li>
-			   <li><a href="/$ul#following">Following</a></li>
             </ul>
             <div class="panes">
                <div id="annPane">
@@ -210,98 +207,7 @@ print <<< CON
                      </tbody>
                   </table>
                </div>
-               <div id="followersPane">
-					<div class="follower-container">
-						<div class="follower-content">
-							<div class="follower-image">
-								<img src="/image/twitter-profile_normal.jpg">
-							</div>
-							
-							<div class="follower-name">
-								<p>Rand Fishkin</p><span>@randf</span>
-							</div>
-							
-							<div class="follower-btn">
-								<input alt="Follow" src="/image/followplus.gif" type="image">
-							</div>
-						</div>
-						
-						<div class="follower-content">
-							<div class="follower-image">
-								<img src="/image/twitter-profile_normal.jpg">
-							</div>
-							
-							<div class="follower-name">
-								<p>Rand Fishkin</p><span>@randf</span>
-							</div>
-							
-							<div class="follower-btn">
-								<input alt="Follow" src="/image/followplus.gif" type="image">
-							</div>
-						</div>
-						
-						<div class="follower-content">
-							<div class="follower-image">
-								<img src="/image/twitter-profile_normal.jpg">
-							</div>
-							
-							<div class="follower-name">
-								<p>Rand Fishkin</p><span>@randf</span>
-							</div>
-							
-							<div class="follower-btn">
-								<input alt="Follow" src="/image/followplus.gif" type="image">
-							</div>
-						</div>
-					</div>
-			   </div>
-			   
-			   <div id="followingPane">
-					<div class="follower-container">
-						<div class="follower-content">
-							<div class="follower-image">
-								<img src="/image/twitter-profile_normal.jpg">
-							</div>
-							
-							<div class="follower-name">
-								<p>Rand Fishkin</p><span>@randf</span>
-							</div>
-							
-							<div class="follower-btn">
-								<input alt="Follow" src="/image/followplus.gif" type="image">
-							</div>
-						</div>
-						
-						<div class="follower-content">
-							<div class="follower-image">
-								<img src="/image/twitter-profile_normal.jpg">
-							</div>
-							
-							<div class="follower-name">
-								<p>Rand Fishkin</p><span>@randf</span>
-							</div>
-							
-							<div class="follower-btn">
-								<input alt="Follow" src="/image/followplus.gif" type="image">
-							</div>
-						</div>
-						
-						<div class="follower-content">
-							<div class="follower-image">
-								<img src="/image/twitter-profile_normal.jpg">
-							</div>
-							
-							<div class="follower-name">
-								<p>Rand Fishkin</p><span>@randf</span>
-							</div>
-							
-							<div class="follower-btn">
-								<input alt="Follow" src="/image/followplus.gif" type="image">
-							</div>
-						</div>
-					</div>
-			   </div>
-			   
+               <div id="abtPane">$aboutContent</div>
             </div>
             </div>
          </div>
@@ -316,9 +222,6 @@ print <<< CON
                <img src="$schoolLogo" title="{$classes[0]} mascot" alt="{$classes[0]} mascot">
                $logoUp
             </div-->
-			<div>
-				<button type="button" id="follow-btn">Follow</button>
-			</div>
             <div id="prClass">
                <h3>Class Titles</h3>
                $classList

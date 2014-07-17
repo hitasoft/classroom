@@ -13,9 +13,9 @@
 	<?php }elseif(!$public && $_login){
 		if (!$ul) $ul=$_login;
 		if ($_GET['u']){	// status page
-			if (function_exists("getUserImage")) $user_image=getUserImage($ul,true);
+			if (function_exists("getUserImage")) $user_image=getUserImage($user['login'],true);
 			$clUrl='http://www.educator.com/'.$ul;
-			$hdrTab="class='headerGlobe'><img src='$user_image' alt=''><span>$ul</span>";
+			$hdrTab="class='headerGlobe'><img src='$user_image' alt=''><span>{$user['login']}</span>";
 			$hdrLnk=<<<EOF
 			<div id='headerLnk'>
 				<div class="calloutContent" id="publicLink">

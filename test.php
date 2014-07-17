@@ -1,4 +1,5 @@
 <?php
+/*
 	include 'incl/common.php';
 	require_once 'account/bootstrap.php';
 	$user=Am_Di::getInstance()->auth->getUser();
@@ -13,5 +14,14 @@
 	if (file_exists($oud)) echo " - no!";
 	rename("$nud/pp_$ol.jpg","$nud/pp_$nl.jpg");
 	echo "</pre>";
+*/
 
-?>
+
+session_name('connect');
+session_start();
+
+if (!include('incl/base.php')) die('Base classes not found');
+
+$following = get_followers($user['user_id']);
+print_r($following);
+
